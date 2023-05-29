@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 
 import App from './App';
-import Signin from './Components/Signin';
+import Signin from './Components/Signin/page';
 
 initFirebase();
 

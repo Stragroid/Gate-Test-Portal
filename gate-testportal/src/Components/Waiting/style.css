@@ -1,0 +1,35 @@
+@font-face {
+  font-family: rlcfont;
+  src: url("../../assets/fonts/lithoslight.ttf") format("truetype");
+}
+
+* {
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.waitingBody {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  font-family: rlcfont;
+  font-size: x-large;
+  justify-content: center;
+  align-items: center;
+  background: -webkit-radial-gradient(
+    60% bottom,
+    rgb(113, 229, 255),
+    rgb(0, 127, 246),
+    rgb(0, 127, 246)
+  );
+}
+
+.waitingMain {
+  height: 90vh;
+  width: 90vw;
+  background-color: white;
+  display: flex;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+}

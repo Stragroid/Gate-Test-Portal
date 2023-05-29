@@ -1,6 +1,6 @@
 import { auth } from "./firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
-import Signin from "./Components/Signin";
+import Signin from "./Components/Signin/page";
 import Test from "./Components/Test";
 
 function App() {

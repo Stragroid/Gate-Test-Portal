@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../firebaseConfig";
+import { auth, db } from "../../firebaseConfig";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./style.css";
+import rlcIcon from "../../assets/images/rlc-icon.png";
 
 export default function Signin() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -39,26 +41,9 @@ export default function Signin() {
     });
   }
 
-  function validateEmail(email) {
-    const q = query(collection(db, "users"), where("email", "==", email));
-    getDocs(q).then((querySnapshot) => {
-      if (querySnapshot.size === 0) {
-        setErrorMessage("Email not registered");
-      } else {
-        setErrorMessage("");
-      }
-    });
-  }
-
-  function validatePassword(pass) {
-    if (pass.length < 6)
-      setErrorMessage("Password needs to be atleast 6 characters long");
-    else setErrorMessage("");
-  }
-
   return (
     <>
-      <div className="flex flex-col items-center justify-center py-2 mainDiv">
+      {/* <div className="flex flex-col items-center justify-center py-2 mainDiv">
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <h2 className="mb-4 text-center text-2xl font-bold leading-9 tracking-tight text-white-900">
@@ -144,6 +129,56 @@ export default function Signin() {
             </p>
           </div>
         </div>
+      </div> */}
+      <div className="main">
+        <img src={rlcIcon} height="150" alt="rlc-icon" />
+        <br />
+        <h1 style={{ fontSize: "xx-large" }}>Test Portal</h1>
+        <br />
+        <label
+          htmlFor="email"
+          style={{
+            color: "red",
+            fontSize: "large",
+            fontWeight: "bold",
+            background: "transparent",
+          }}
+        >
+          {errorMessage}
+        </label>
+        <form onSubmit={handleSigninClick} style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+          <div className="cred">
+            <div className="cred-name">
+              Username: &nbsp;
+              <br />
+              <br />
+              <br />
+              Password: &nbsp;
+            </div>
+            <div className="cred-details">
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+              />
+              <br />
+              <br />
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+              />
+            </div>
+          </div>
+          <br />
+          <button type="submit">Sign In</button>
+        </form>
+        <br />
+        <Link to={`/adminLogin`}>Are you an Admin?</Link>
       </div>
     </>
   );
