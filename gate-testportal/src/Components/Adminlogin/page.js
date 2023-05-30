@@ -27,7 +27,7 @@ export default function Adminlogin() {
           } else {
             signInWithEmailAndPassword(auth, email, password)
               .then((userCredential) => {
-                navigate("/");
+                navigate("/admin/dashboard");
               })
               .catch((error) => {
                 const errorCode = error.code;
@@ -178,7 +178,7 @@ export default function Adminlogin() {
           <button type="submit">Sign In</button>
         </form>
         <br />
-        <Link to={`/signin`}>Are you a Student?</Link>
+        <Link to={`/`}>Are you a Student?</Link>
       </div>
     </>
   );
