@@ -1,6 +1,13 @@
 import "./style.css";
 import { db, auth } from "../../firebaseConfig";
-import { collection, query, getDocs, updateDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  getDocs,
+  updateDoc,
+  doc,
+  where,
+} from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -12,6 +19,7 @@ export default function QuestionEditor() {
   const [testid, setTestId] = useState(null);
   const [online, setOnline] = useState(false);
   const [user, loading] = useAuthState(auth);
+  const [isAdmin, setIsAdmin] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,7 +37,21 @@ export default function QuestionEditor() {
         setQuestions(quests);
       });
     });
-  }, []);
+    if (user) {
+      const q1 = query(
+        collection(db, "admin"),
+        where("email", "==", user.email)
+      );
+      console.log(user.email);
+      getDocs(q1).then((querySnapshot) => {
+        if (querySnapshot.empty) {
+          setIsAdmin(false);
+        } else {
+          setIsAdmin(true);
+        }
+      });
+    }
+  }, [user]);
 
   function removeQuestion(index) {
     return () => {
@@ -103,24 +125,10 @@ export default function QuestionEditor() {
       });
   }
 
-  function checkIsAdmin(email) {
-    //Check in database
-    const q = query(collection(db, "admins"));
-    getDocs(q).then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        if (doc.exists) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    });
-  }
-
   return (
     <>
       {user ? (
-        checkIsAdmin(user.email) ? (
+        isAdmin ? (
           <>
             <div className="questions">
               {questions !== null
