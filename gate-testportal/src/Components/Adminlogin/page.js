@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import "./style.css";
 import rlcIcon from "../../assets/images/rlc-icon.png";
 
-export default function Signin() {
+export default function Adminlogin() {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ export default function Signin() {
     e.preventDefault();
     let email = e.target.email.value;
     let password = e.target.password.value;
-    const q = query(collection(db, "students"), where("email", "==", email));
+    const q = query(collection(db, "admin"), where("email", "==", email));
     getDocs(q).then((querySnapshot) => {
       if (querySnapshot.size === 0) {
         setErrorMessage("User does not exist");
@@ -130,7 +130,7 @@ export default function Signin() {
           </div>
         </div>
       </div> */}
-      <div className="main">
+      <div className="adminloginmain">
         <img src={rlcIcon} height="150" alt="rlc-icon" />
         <br />
         <h1 style={{ fontSize: "xx-large" }}>Test Portal</h1>
@@ -149,11 +149,11 @@ export default function Signin() {
         <form onSubmit={handleSigninClick} style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
           <div className="cred">
             <div className="cred-name">
-              Username: &nbsp;
+              Admin Username: &nbsp;
               <br />
               <br />
               <br />
-              Password: &nbsp;
+              Admin Password: &nbsp;
             </div>
             <div className="cred-details">
               <input
@@ -178,7 +178,7 @@ export default function Signin() {
           <button type="submit">Sign In</button>
         </form>
         <br />
-        <Link to={`/admin`}>Are you an Admin?</Link>
+        <Link to={`/signin`}>Are you a Student?</Link>
       </div>
     </>
   );

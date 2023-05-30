@@ -1,0 +1,54 @@
+@font-face {
+    font-family: rlcfont;
+    src: url('../../assets/fonts/lithoslight.ttf') format('truetype');
+  }
+
+*{
+    overflow-y: 0;
+    overflow-x: 0;
+    padding: 0;
+    margin: 0;
+    font-family: rlcfont;
+}
+
+.adminloginmain{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    color: rgb(255, 255, 255);
+    justify-content: center;
+    align-items: center;
+    background: -webkit-radial-gradient(60% bottom,rgb(255, 141, 141),rgb(255, 48, 48),rgb(177, 29, 29));
+}
+
+.cred{
+    display: flex;
+}
+
+.cred-name{
+    font-family: rlcfont;
+    font-weight: 900;
+    color: white;
+}
+
+.cred-details input{
+    border-radius: 5px;
+    padding: 5px;
+    border-style: none;
+    outline: 0;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.adminloginmain button{
+    background-color: white;
+    font-family: rlcfont;
+    padding: 5px;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-style: none;
+    outline: 0;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 900;
+}

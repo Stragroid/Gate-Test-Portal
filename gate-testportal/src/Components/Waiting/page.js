@@ -1,8 +1,29 @@
 import "./style.css";
 import { useEffect, useState } from "react";
+import { auth } from "../../firebaseConfig";
+import { signOut } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function WaitingPage(props) {
   const [remTime, setRemTime] = useState(0);
+  const [user, loading] = useAuthState(auth);
+  const navigate = useNavigate();
+
+  function logout(e) {
+    e.preventDefault();
+    signOut(auth)
+      .then(() => {
+        console.log("Signed out successfully!");
+        navigate("/");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  }
+
 
   useEffect(() => {
     fetch("http://worldtimeapi.org/api/timezone/Asia/Kolkata").then((data) => {
@@ -37,7 +58,12 @@ export default function WaitingPage(props) {
     <>
       <div className="waitingBody">
         <div className="waitingMain">
-          Your test starts in : {transformTime(remTime)}
+          {user.email}<br/>Your test starts in : {transformTime(remTime)}
+          <button
+            onClick={logout}
+          >
+            logout
+          </button>
         </div>
       </div>
     </>

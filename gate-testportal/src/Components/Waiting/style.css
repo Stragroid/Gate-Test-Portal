@@ -30,6 +30,21 @@
   background-color: white;
   display: flex;
   border-radius: 10px;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.waitingMain button{
+  background-color: rgb(80, 150, 255);
+  font-family: rlcfont;
+  padding: 10px;
+  font-size: large;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-style: none;
+  outline: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
 }
