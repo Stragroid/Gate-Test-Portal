@@ -7,6 +7,7 @@ import {
   updateDoc,
   doc,
   where,
+  Timestamp,
 } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +21,8 @@ export default function QuestionEditor() {
   const [online, setOnline] = useState(false);
   const [user, loading] = useAuthState(auth);
   const [isAdmin, setIsAdmin] = useState(true);
+  const [testStartTimestamp, setTestStartTimestamp] = useState(null); // [timestamp, setTimestamp
+  const [testDuration, setTestDuration] = useState(null); // [timestamp, setTimestamp
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +38,8 @@ export default function QuestionEditor() {
           quests.push(value);
         });
         setQuestions(quests);
+        setTestStartTimestamp(doc.data().startTime.toDate());
+        setTestDuration(doc.data().duration);
       });
     });
     if (user) {
@@ -42,7 +47,6 @@ export default function QuestionEditor() {
         collection(db, "admin"),
         where("email", "==", user.email)
       );
-      console.log(user.email);
       getDocs(q1).then((querySnapshot) => {
         if (querySnapshot.empty) {
           setIsAdmin(false);
@@ -81,6 +85,14 @@ export default function QuestionEditor() {
     setQuestionCount(questionCount + 1);
   }
 
+  function ISOtoLocal(time) {
+    const z = new Date().getTimezoneOffset() * 60 * 1000;
+    time = time - z;
+    time = new Date(time).toISOString();
+    time = time.split(".")[0];
+    return time;
+  }
+
   function uploadTest() {
     // Convert questions array to map
     let newQuestions = {};
@@ -102,6 +114,8 @@ export default function QuestionEditor() {
     }
     let test = {
       questions: newQuestions,
+      startTime: Timestamp.fromDate(new Date(testStartTimestamp)),
+      duration: testDuration,
     };
     updateDoc(doc(db, "test", testid), test);
   }
@@ -129,110 +143,138 @@ export default function QuestionEditor() {
     <>
       {user ? (
         isAdmin ? (
-          <>
-            <div className="questions">
-              {questions !== null
-                ? questions.map((question, index) => {
-                    return (
-                      <div className={"q" + (index + 1)} key={index + 1}>
-                        <div className="q">
-                          <label htmlFor="question">Question</label>
-                          <input
-                            type="text"
-                            name="question"
-                            id="question"
-                            defaultValue={question.q}
-                            onChange={(e) => {
-                              let quests = [...questions];
-                              quests[index].q = e.target.value;
-                              setQuestions(quests);
-                            }}
-                          />
+          testStartTimestamp && testDuration ? (
+            <>
+              <div className="questions">
+                {questions !== null
+                  ? questions.map((question, index) => {
+                      return (
+                        <div className={"q" + (index + 1)} key={index + 1}>
+                          <div className="q">
+                            <label htmlFor="question">Question</label>
+                            <input
+                              type="text"
+                              name="question"
+                              id="question"
+                              defaultValue={question.q}
+                              onChange={(e) => {
+                                let quests = [...questions];
+                                quests[index].q = e.target.value;
+                                setQuestions(quests);
+                              }}
+                            />
+                          </div>
+                          <div className="o1">
+                            <label htmlFor="option1">Option 1</label>
+                            <input
+                              type="text"
+                              name="option1"
+                              id="option1"
+                              defaultValue={question.o1}
+                              onChange={(e) => {
+                                let quests = [...questions];
+                                quests[index].o1 = e.target.value;
+                                setQuestions(quests);
+                              }}
+                            />
+                          </div>
+                          <div className="o2">
+                            <label htmlFor="option2">Option 2</label>
+                            <input
+                              type="text"
+                              name="option2"
+                              id="option2"
+                              defaultValue={question.o2}
+                              onChange={(e) => {
+                                let quests = [...questions];
+                                quests[index].o2 = e.target.value;
+                                setQuestions(quests);
+                              }}
+                            />
+                          </div>
+                          <div className="o3">
+                            <label htmlFor="option3">Option 3</label>
+                            <input
+                              type="text"
+                              name="option3"
+                              id="option3"
+                              defaultValue={question.o3}
+                              onChange={(e) => {
+                                let quests = [...questions];
+                                quests[index].o3 = e.target.value;
+                                setQuestions(quests);
+                              }}
+                            />
+                          </div>
+                          <div className="o4">
+                            <label htmlFor="option4">Option 4</label>
+                            <input
+                              type="text"
+                              name="option4"
+                              id="option4"
+                              defaultValue={question.o4}
+                              onChange={(e) => {
+                                let quests = [...questions];
+                                quests[index].o4 = e.target.value;
+                                setQuestions(quests);
+                              }}
+                            />
+                          </div>
+                          <div className="answer">
+                            <label htmlFor="answer">Answer</label>
+                            <input
+                              type="text"
+                              name="answer"
+                              id="answer"
+                              defaultValue={question.a}
+                              onChange={(e) => {
+                                let quests = [...questions];
+                                quests[index].a = e.target.value;
+                                setQuestions(quests);
+                              }}
+                            />
+                          </div>
+                          <button onClick={removeQuestion(index)}>
+                            Remove
+                          </button>
                         </div>
-                        <div className="o1">
-                          <label htmlFor="option1">Option 1</label>
-                          <input
-                            type="text"
-                            name="option1"
-                            id="option1"
-                            defaultValue={question.o1}
-                            onChange={(e) => {
-                              let quests = [...questions];
-                              quests[index].o1 = e.target.value;
-                              setQuestions(quests);
-                            }}
-                          />
-                        </div>
-                        <div className="o2">
-                          <label htmlFor="option2">Option 2</label>
-                          <input
-                            type="text"
-                            name="option2"
-                            id="option2"
-                            defaultValue={question.o2}
-                            onChange={(e) => {
-                              let quests = [...questions];
-                              quests[index].o2 = e.target.value;
-                              setQuestions(quests);
-                            }}
-                          />
-                        </div>
-                        <div className="o3">
-                          <label htmlFor="option3">Option 3</label>
-                          <input
-                            type="text"
-                            name="option3"
-                            id="option3"
-                            defaultValue={question.o3}
-                            onChange={(e) => {
-                              let quests = [...questions];
-                              quests[index].o3 = e.target.value;
-                              setQuestions(quests);
-                            }}
-                          />
-                        </div>
-                        <div className="o4">
-                          <label htmlFor="option4">Option 4</label>
-                          <input
-                            type="text"
-                            name="option4"
-                            id="option4"
-                            defaultValue={question.o4}
-                            onChange={(e) => {
-                              let quests = [...questions];
-                              quests[index].o4 = e.target.value;
-                              setQuestions(quests);
-                            }}
-                          />
-                        </div>
-                        <div className="answer">
-                          <label htmlFor="answer">Answer</label>
-                          <input
-                            type="text"
-                            name="answer"
-                            id="answer"
-                            defaultValue={question.a}
-                            onChange={(e) => {
-                              let quests = [...questions];
-                              quests[index].a = e.target.value;
-                              setQuestions(quests);
-                            }}
-                          />
-                        </div>
-                        <button onClick={removeQuestion(index)}>Remove</button>
-                      </div>
-                    );
-                  })
-                : null}
-            </div>
-            <button onClick={changeStatus}>
-              Make Test {online ? "Offline" : "Online"}
-            </button>
-            <button onClick={uploadTest}>Upload Test</button>
-            <button onClick={addQuestion}>Add a question</button>
-            <button onClick={clearTest}>Clear test</button>
-            <button onClick={logout}>Logout</button>
-          </>
+                      );
+                    })
+                  : null}
+              </div>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <label htmlFor="testStartTime">Start Of Test: </label>
+                <input
+                  type="datetime-local"
+                  name="testStartTime"
+                  id="testStartTime"
+                  defaultValue={ISOtoLocal(testStartTimestamp)}
+                  onChange={(e) => {
+                    setTestStartTimestamp(new Date(e.target.value));
+                  }}
+                />
+              </div>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <label htmlFor="testDuration">Duration(in minutes): </label>
+                <input
+                  type="text"
+                  name="testDuration"
+                  id="testDuration"
+                  defaultValue={testDuration}
+                  onChange={(e) => {
+                    setTestDuration(e.target.value);
+                  }}
+                />
+              </div>
+              <button onClick={changeStatus}>
+                Make Test {online ? "Offline" : "Online"}
+              </button>
+              <button onClick={uploadTest}>Upload Test</button>
+              <button onClick={addQuestion}>Add a question</button>
+              <button onClick={clearTest}>Clear test</button>
+              <button onClick={logout}>Logout</button>
+            </>
+          ) : null
         ) : (
           navigate("/")
         )

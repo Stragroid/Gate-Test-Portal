@@ -13,6 +13,7 @@ import App from './App';
 import Signin from './Components/Signin/page';
 import Adminlogin from './Components/Adminlogin/page';
 import QuestionEditor from './Components/QuestionEditor/page';
+import Test from './Test';
 
 initFirebase();
 
@@ -47,6 +48,14 @@ const router = createBrowserRouter([
     element: (
       <>
         <QuestionEditor />
+      </>
+    ),
+  },
+  {
+    path: "/test",
+    element: (
+      <>
+        <Test />
       </>
     ),
   },
