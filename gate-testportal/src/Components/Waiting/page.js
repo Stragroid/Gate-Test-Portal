@@ -6,7 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 
 export default function WaitingPage(props) {
-  const [remTime, setRemTime] = useState(props.remTime);
+  const [remTime, setRemTime] = useState(0);
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
@@ -23,6 +23,17 @@ export default function WaitingPage(props) {
         console.log(errorCode, errorMessage);
       });
   }
+
+
+  useEffect(() => {
+    fetch("https://worldtimeapi.org/api/timezone/Asia/Kolkata").then((data) => {
+      data.json().then((data) => {
+        let currTime = new Date(data.datetime).getTime();
+        const rem = new Date(props.testTime).getTime() - currTime;
+        setRemTime(rem);
+      });
+    });
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -47,10 +58,12 @@ export default function WaitingPage(props) {
     <>
       <div className="waitingBody">
         <div className="waitingMain">
-          {user.email}
-          <br />
-          Your test starts in : {transformTime(remTime)}
-          <button onClick={logout}>logout</button>
+          {user.email}<br/>Your test starts in : {transformTime(remTime)}
+          <button
+            onClick={logout}
+          >
+            logout
+          </button>
         </div>
       </div>
     </>

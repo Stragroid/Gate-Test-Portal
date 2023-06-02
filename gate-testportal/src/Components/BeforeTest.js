@@ -5,7 +5,7 @@ export default function BeforeTest(props) {
   const [remTime, setRemTime] = useState(0);
 
   useEffect(() => {
-    fetch("http://worldtimeapi.org/api/timezone/Asia/Kolkata").then((data) => {
+    fetch("https://worldtimeapi.org/api/timezone/Asia/Kolkata").then((data) => {
       data.json().then((data) => {
         currTime = new Date(data.datetime).getTime();
       });
