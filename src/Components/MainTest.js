@@ -16,15 +16,17 @@ export default function MainTest() {
   const [questions, setQuestions] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answered, setAnswered] = useState(0);
-  const [notAnswered, setNotAnswered] = useState(1);
+  const [notAnswered, setNotAnswered] = useState(0);
   const [notVisited, setNotVisited] = useState(0);
   const [answeredReview, setAnsweredReview] = useState(0);
   const [markedForReview, setMarkedForReview] = useState(0);
+  const [studentAnswers, setStudentAnswers] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const q = query(collection(db, "test"));
-    getDocs(q)
+    if (loading) return;
+
+    getDocs(query(collection(db, "test")))
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           setOnline(doc.data().online);
@@ -34,17 +36,41 @@ export default function MainTest() {
           const map = new Map(Object.entries(doc.data().questions));
           let quests = [];
           map.forEach(function (value, key) {
-            value.status = "nv";
             quests.push(value);
           });
-          quests[0].status = "na";
-          setNotVisited(quests.length - 1);
           setQuestions(quests);
         });
       })
       .catch((error) => {
         console.log("Error getting documents: ", error);
       });
+    getDocs(query(collection(db, "students"))).then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        if (doc.data().email === user.email) {
+          let ans = [];
+          const map = new Map(Object.entries(doc.data().answers));
+          let answered = 0,
+            notAnswered = 0,
+            notVisited = 0,
+            answeredReview = 0,
+            markedForReview = 0;
+          map.forEach(function (value, key) {
+            if (value.status === "na") notAnswered++;
+            else if (value.status === "a") answered++;
+            else if (value.status === "nv") notVisited++;
+            else if (value.status === "amr") answeredReview++;
+            else if (value.status === "mr") markedForReview++;
+            ans.push(value);
+          });
+          setAnswered(answered);
+          setNotAnswered(notAnswered);
+          setNotVisited(notVisited);
+          setAnsweredReview(answeredReview);
+          setMarkedForReview(markedForReview);
+          setStudentAnswers(ans);
+        }
+      });
+    });
   }, []);
 
   useEffect(() => {
@@ -89,7 +115,7 @@ export default function MainTest() {
     setTimeLeft(`${hours}:${minutes}:${seconds}`);
   }
 
-  return questions ? (
+  return questions && studentAnswers ? (
     <>
       <header style={{ backgroundColor: "#3b5998" }}>
         <img src={RLCicon} height="80" alt="banner" />
@@ -123,6 +149,7 @@ export default function MainTest() {
                   style={{
                     display: index === currentQuestionIndex ? "block" : "none",
                   }}
+                  key={index + 1}
                 >
                   {question.q}
                 </div>
@@ -131,15 +158,16 @@ export default function MainTest() {
                   style={{
                     display: index === currentQuestionIndex ? "block" : "none",
                   }}
+                  key={-index - 1}
                 >
                   <label>
                     <input
                       type="radio"
                       name={index}
                       value="A"
-                      checked={question.answer === "a"}
+                      checked={studentAnswers[index].answer === "a"}
                       onChange={() => {
-                        let q = questions;
+                        let q = studentAnswers;
                         q[index].answer = "a";
                         if (
                           q[index].status === "mr" ||
@@ -157,7 +185,7 @@ export default function MainTest() {
                           }
                           q[index].status = "a";
                         }
-                        setQuestions(q);
+                        setStudentAnswers(q);
                       }}
                     />
                     &nbsp;{question.o1}
@@ -167,9 +195,9 @@ export default function MainTest() {
                       type="radio"
                       name={index}
                       value="B"
-                      checked={question.answer === "b"}
+                      checked={studentAnswers[index].answer === "b"}
                       onChange={() => {
-                        let q = questions;
+                        let q = studentAnswers;
                         q[index].answer = "b";
                         if (
                           q[index].status === "mr" ||
@@ -185,9 +213,9 @@ export default function MainTest() {
                             setNotAnswered(notAnswered - 1);
                             setAnswered(answered + 1);
                           }
-                          q[index].status = "a";
+                          q[index].status = "b";
                         }
-                        setQuestions(q);
+                        setStudentAnswers(q);
                       }}
                     />
                     &nbsp;{question.o2}
@@ -197,9 +225,9 @@ export default function MainTest() {
                       type="radio"
                       name={index}
                       value="C"
-                      checked={question.answer === "c"}
+                      checked={studentAnswers[index].answer === "c"}
                       onChange={() => {
-                        let q = questions;
+                        let q = studentAnswers;
                         q[index].answer = "c";
                         if (
                           q[index].status === "mr" ||
@@ -215,9 +243,9 @@ export default function MainTest() {
                             setNotAnswered(notAnswered - 1);
                             setAnswered(answered + 1);
                           }
-                          q[index].status = "a";
+                          q[index].status = "c";
                         }
-                        setQuestions(q);
+                        setStudentAnswers(q);
                       }}
                     />
                     &nbsp;{question.o3}
@@ -227,9 +255,9 @@ export default function MainTest() {
                       type="radio"
                       name={index}
                       value="D"
-                      checked={question.answer === "d"}
+                      checked={studentAnswers[index].answer === "d"}
                       onChange={() => {
-                        let q = questions;
+                        let q = studentAnswers;
                         q[index].answer = "d";
                         if (
                           q[index].status === "mr" ||
@@ -245,9 +273,9 @@ export default function MainTest() {
                             setNotAnswered(notAnswered - 1);
                             setAnswered(answered + 1);
                           }
-                          q[index].status = "a";
+                          q[index].status = "d";
                         }
-                        setQuestions(q);
+                        setStudentAnswers(q);
                       }}
                     />
                     &nbsp;{question.o4}
@@ -264,25 +292,25 @@ export default function MainTest() {
           id="mfran"
           className="button"
           onClick={() => {
-            let q = questions;
+            let q = studentAnswers;
             if (q[currentQuestionIndex].status === "na") {
               q[currentQuestionIndex].status = "mr";
-              setQuestions(q);
+              setStudentAnswers(q);
               setNotAnswered(notAnswered - 1);
               setMarkedForReview(markedForReview + 1);
             } else if (q[currentQuestionIndex].status === "a") {
               q[currentQuestionIndex].status = "amr";
-              setQuestions(q);
+              setStudentAnswers(q);
               setAnswered(answered - 1);
               setAnsweredReview(answeredReview + 1);
             } else if (q[currentQuestionIndex].status === "mr") {
               q[currentQuestionIndex].status = "na";
-              setQuestions(q);
+              setStudentAnswers(q);
               setMarkedForReview(markedForReview - 1);
               setNotAnswered(notAnswered + 1);
             } else if (q[currentQuestionIndex].status === "amr") {
               q[currentQuestionIndex].status = "a";
-              setQuestions(q);
+              setStudentAnswers(q);
               setAnswered(answered + 1);
               setAnsweredReview(answeredReview - 1);
             }
@@ -294,7 +322,7 @@ export default function MainTest() {
           id="cr"
           className="button"
           onClick={() => {
-            let q = questions;
+            let q = studentAnswers;
             if (q[currentQuestionIndex].status === "a") {
               setAnswered(answered - 1);
               q[currentQuestionIndex].status = "na";
@@ -305,7 +333,7 @@ export default function MainTest() {
               setMarkedForReview(markedForReview + 1);
             }
             q[currentQuestionIndex].answer = "";
-            setQuestions(q);
+            setStudentAnswers(q);
           }}
         >
           Clear Response
@@ -385,15 +413,17 @@ export default function MainTest() {
               {questions.map((question, index) => {
                 return (
                   <div
-                    className={`item ${question.status}`}
+                    className={`item ${studentAnswers[index].status}`}
                     key={index}
                     onClick={(e) => {
                       setCurrentQuestionIndex(index);
-                      if (question.status === "nv") {
-                        question.status = "na";
+                      let q = studentAnswers;
+                      if (q[index].status === "nv") {
+                        q[index].status = "na";
                         setNotVisited(notVisited - 1);
                         setNotAnswered(notAnswered + 1);
                       }
+                      setStudentAnswers(q);
                     }}
                   >
                     {index + 1}

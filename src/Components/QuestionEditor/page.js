@@ -139,6 +139,22 @@ export default function QuestionEditor() {
       });
   }
 
+  function updateStudentDB(){
+    const q = query(collection(db, "students"));
+    let answer = {};
+    for (let i = 0; i < questionCount; i++) {
+      answer[i + 1] = {
+        answer: "",
+        status: i === 0 ? "na" : "nv",
+      };
+    }
+    getDocs(q).then((querySnapshot) => {
+      querySnapshot.forEach((student) => {
+        updateDoc(doc(db, "students", student.id), {attended: false, answers: answer});
+      });
+    });
+  }
+
   return (
     <>
       {user ? (
@@ -269,6 +285,7 @@ export default function QuestionEditor() {
               <button onClick={changeStatus}>
                 Make Test {online ? "Offline" : "Online"}
               </button>
+              <button onClick={updateStudentDB}>Update Student Database</button>
               <button onClick={uploadTest}>Upload Test</button>
               <button onClick={addQuestion}>Add a question</button>
               <button onClick={clearTest}>Clear test</button>
