@@ -21,6 +21,7 @@ export default function MainTest() {
   const [answeredReview, setAnsweredReview] = useState(0);
   const [markedForReview, setMarkedForReview] = useState(0);
   const [studentAnswers, setStudentAnswers] = useState(null);
+  const [studentID, setStudentID] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,6 +48,7 @@ export default function MainTest() {
     getDocs(query(collection(db, "students"))).then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         if (doc.data().email === user.email) {
+          setStudentID(doc.id);
           let ans = [];
           const map = new Map(Object.entries(doc.data().answers));
           let answered = 0,
@@ -81,6 +83,10 @@ export default function MainTest() {
   });
 
   function handleSubmit() {
+    saveAnswers(user.email);
+    updateDoc(doc(db, "students", studentID), {
+      attended: true,
+    });
     signOut(auth)
       .then(() => {
         console.log("Signed out successfully!");
@@ -115,6 +121,19 @@ export default function MainTest() {
     setTimeLeft(`${hours}:${minutes}:${seconds}`);
   }
 
+  function saveAnswers(email) {
+    let savedAnswers = {};
+    for (let i = 0; i < questions.length; i++) {
+      savedAnswers[i] = {
+        status: studentAnswers[i].status,
+        answer: studentAnswers[i].answer,
+      };
+    }
+    updateDoc(doc(db, "students", studentID), {
+      answers: savedAnswers,
+    });
+  }
+
   return questions && studentAnswers ? (
     <>
       <header style={{ backgroundColor: "#3b5998" }}>
@@ -132,9 +151,6 @@ export default function MainTest() {
           <div id="question-title">
             Question no. {currentQuestionIndex + 1}{" "}
           </div>
-          <button id="favourite" style={{ float: "right" }}>
-            Save
-          </button>
         </div>
         {/* <img
             id="section_info_img"
@@ -213,7 +229,7 @@ export default function MainTest() {
                             setNotAnswered(notAnswered - 1);
                             setAnswered(answered + 1);
                           }
-                          q[index].status = "b";
+                          q[index].status = "a";
                         }
                         setStudentAnswers(q);
                       }}
@@ -243,7 +259,7 @@ export default function MainTest() {
                             setNotAnswered(notAnswered - 1);
                             setAnswered(answered + 1);
                           }
-                          q[index].status = "c";
+                          q[index].status = "a";
                         }
                         setStudentAnswers(q);
                       }}
@@ -273,7 +289,7 @@ export default function MainTest() {
                             setNotAnswered(notAnswered - 1);
                             setAnswered(answered + 1);
                           }
-                          q[index].status = "d";
+                          q[index].status = "a";
                         }
                         setStudentAnswers(q);
                       }}
@@ -341,7 +357,23 @@ export default function MainTest() {
         <div id="pre" className="button" style={{ opacity: 0 }}>
           Previous
         </div>
-        <div id="next" className="button">
+        <div
+          id="next"
+          className="button"
+          onClick={() => {
+            if (currentQuestionIndex < questions.length - 1) {
+              let q = studentAnswers;
+              if (q[currentQuestionIndex + 1].status === "nv") {
+                q[currentQuestionIndex + 1].status = "na";
+                setNotAnswered(notAnswered + 1);
+                setNotVisited(notVisited - 1);
+              }
+              setStudentAnswers(q);
+              setCurrentQuestionIndex(currentQuestionIndex + 1);
+            }
+            saveAnswers(user.email);
+          }}
+        >
           Save and Next
         </div>
       </div>
@@ -410,20 +442,18 @@ export default function MainTest() {
           <div id="questions_select_area">
             <div id="choose_text">Choose a Question</div>
             <div id="palette-list">
-              {questions.map((question, index) => {
+              {studentAnswers.map((answer, index) => {
                 return (
                   <div
-                    className={`item ${studentAnswers[index].status}`}
+                    className={`item ${answer.status}`}
                     key={index}
                     onClick={(e) => {
                       setCurrentQuestionIndex(index);
-                      let q = studentAnswers;
-                      if (q[index].status === "nv") {
-                        q[index].status = "na";
+                      if (answer.status === "nv") {
+                        answer.status = "na";
                         setNotVisited(notVisited - 1);
                         setNotAnswered(notAnswered + 1);
                       }
-                      setStudentAnswers(q);
                     }}
                   >
                     {index + 1}
@@ -436,7 +466,15 @@ export default function MainTest() {
       </div>
 
       <div id="submit_container">
-        <div onClick={handleSubmit} className="button" id="submit">
+        <div
+          className="button"
+          id="submit"
+          onClick={() => {
+            if (window.confirm("Are you sure you want to submit the test?")) {
+              handleSubmit();
+            }
+          }}
+        >
           Submit
         </div>
       </div>
