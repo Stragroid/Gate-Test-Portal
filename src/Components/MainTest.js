@@ -22,6 +22,7 @@ export default function MainTest() {
   const [markedForReview, setMarkedForReview] = useState(0);
   const [studentAnswers, setStudentAnswers] = useState(null);
   const [studentID, setStudentID] = useState(null);
+  const [userName, setUserName] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,6 +50,7 @@ export default function MainTest() {
       querySnapshot.forEach((doc) => {
         if (doc.data().email === user.email) {
           setStudentID(doc.id);
+          setUserName(doc.data().username);
           let ans = [];
           const map = new Map(Object.entries(doc.data().answers));
           let answered = 0,
@@ -164,6 +166,8 @@ export default function MainTest() {
                   className="question"
                   style={{
                     display: index === currentQuestionIndex ? "block" : "none",
+                    marginTop: "10px",
+                    marginLeft: "10px",
                   }}
                   key={index + 1}
                 >
@@ -386,7 +390,7 @@ export default function MainTest() {
               src="https://www.digialm.com//OnlineAssessment/images/NewCandidateImage.jpg"
             />
           </div>
-          <div id="cname">{user.email}</div>
+          <div id="cname">{userName}</div>
         </div>
         <div id="border">
           <div id="color_info">
