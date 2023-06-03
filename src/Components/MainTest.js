@@ -136,6 +136,14 @@ export default function MainTest() {
     });
   }
 
+  function handleOnLoadRadio(index, id) {
+    if (document.getElementById(id) !== null) {
+      if (studentAnswers[index].answer === id[id.length - 1]) {
+        document.getElementById(id).checked = true;
+      }
+    }
+  }
+
   return questions && studentAnswers ? (
     <>
       <header style={{ backgroundColor: "#3b5998" }}>
@@ -185,7 +193,8 @@ export default function MainTest() {
                       type="radio"
                       name={index}
                       value="A"
-                      checked={studentAnswers[index].answer === "a"}
+                      id={index + "a"}
+                      onLoad={handleOnLoadRadio(index, `${index}a`)}
                       onChange={() => {
                         let q = studentAnswers;
                         q[index].answer = "a";
@@ -215,7 +224,8 @@ export default function MainTest() {
                       type="radio"
                       name={index}
                       value="B"
-                      checked={studentAnswers[index].answer === "b"}
+                      id={index + "b"}
+                      onLoad={handleOnLoadRadio(index, `${index}b`)}
                       onChange={() => {
                         let q = studentAnswers;
                         q[index].answer = "b";
@@ -245,7 +255,8 @@ export default function MainTest() {
                       type="radio"
                       name={index}
                       value="C"
-                      checked={studentAnswers[index].answer === "c"}
+                      id={index + "c"}
+                      onLoad={handleOnLoadRadio(index, `${index}c`)}
                       onChange={() => {
                         let q = studentAnswers;
                         q[index].answer = "c";
@@ -275,7 +286,8 @@ export default function MainTest() {
                       type="radio"
                       name={index}
                       value="D"
-                      checked={studentAnswers[index].answer === "d"}
+                      id={index + "d"}
+                      onLoad={handleOnLoadRadio(index, `${index}d`)}
                       onChange={() => {
                         let q = studentAnswers;
                         q[index].answer = "d";
