@@ -366,6 +366,10 @@ export default function MainTest() {
             }
             q[currentQuestionIndex].answer = "";
             setStudentAnswers(q);
+            let radio = document.getElementsByName(currentQuestionIndex);
+            for (let i = 0; i < radio.length; i++) {
+              radio[i].checked = false;
+            }
           }}
         >
           Clear Response
