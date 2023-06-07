@@ -409,3 +409,19 @@ label {
   padding: 15px;
   background-color: #fff;
 }
+
+/* mjx-c,
+mjx-mo,
+mjx-mn,
+mjx-mi,
+mjx-mtext,
+mjx-mspace,
+mjx-msub {
+  overflow-y: hidden;
+} */
+
+/* Apply style to all tags starting with mjx- */
+
+[class^="mjx-"] {
+  overflow-y: hidden;
+}

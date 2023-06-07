@@ -139,7 +139,7 @@ export default function QuestionEditor() {
       });
   }
 
-  function updateStudentDB(){
+  function updateStudentDB() {
     const q = query(collection(db, "students"));
     let answer = {};
     for (let i = 0; i < questionCount; i++) {
@@ -150,7 +150,10 @@ export default function QuestionEditor() {
     }
     getDocs(q).then((querySnapshot) => {
       querySnapshot.forEach((student) => {
-        updateDoc(doc(db, "students", student.id), {attended: false, answers: answer});
+        updateDoc(doc(db, "students", student.id), {
+          attended: false,
+          answers: answer,
+        });
       });
     });
   }

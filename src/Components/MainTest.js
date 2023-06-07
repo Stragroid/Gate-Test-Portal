@@ -78,6 +78,16 @@ export default function MainTest() {
   }, []);
 
   useEffect(() => {
+    try {
+      if (typeof window?.MathJax !== "undefined") {
+        window.MathJax.typeset();
+      }
+    } catch (err) {
+      // console.log(err);
+    }
+  });
+
+  useEffect(() => {
     const interval = setInterval(() => {
       TimeLeft(testStartTime, testDuration);
     }, 1000);
