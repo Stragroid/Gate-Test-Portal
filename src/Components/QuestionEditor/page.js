@@ -103,6 +103,9 @@ export default function QuestionEditor() {
       let o3 = questions[i].o3;
       let o4 = questions[i].o4;
       let a = questions[i].a;
+      let questionType = questions[i].questionType;
+      let marksOnCorrect = questions[i].marksOnCorrect;
+      let marksOnIncorrect = questions[i].marksOnIncorrect;
       newQuestions[i + 1] = {
         q: q,
         o1: o1,
@@ -110,6 +113,9 @@ export default function QuestionEditor() {
         o3: o3,
         o4: o4,
         a: a,
+        questionType: questionType,
+        marksOnCorrect: marksOnCorrect,
+        marksOnIncorrect: marksOnIncorrect,
       };
     }
     let test = {
@@ -249,6 +255,59 @@ export default function QuestionEditor() {
                               onChange={(e) => {
                                 let quests = [...questions];
                                 quests[index].a = e.target.value;
+                                setQuestions(quests);
+                              }}
+                            />
+                          </div>
+                          <div className="questionType">
+                            <label htmlFor="questionType">Question Type</label>
+                            <select
+                              name="questionType"
+                              id="questionType"
+                              defaultValue={question.questionType}
+                              onChange={(e) => {
+                                let quests = [...questions];
+                                quests[index].questionType = e.target.value;
+                                setQuestions(quests);
+                              }}
+                            >
+                              <option value="somcq">Single Option MCQ</option>
+                              <option value="momcq">Multiple Option MCQ</option>
+                              <option value="numerical">Numerical</option>
+                            </select>
+                          </div>
+                          <div className="marksOnCorrect">
+                            <label htmlFor="marksOnCorrect">
+                              Marks on Correct
+                            </label>
+                            <input
+                              type="text"
+                              name="marksOnCorrect"
+                              id="marksOnCorrect"
+                              defaultValue={question.marksOnCorrect}
+                              onChange={(e) => {
+                                let quests = [...questions];
+                                quests[index].marksOnCorrect = parseInt(
+                                  e.target.value
+                                );
+                                setQuestions(quests);
+                              }}
+                            />
+                          </div>
+                          <div className="marksOnInCorrect">
+                            <label htmlFor="marksOnInCorrect">
+                              Marks on Incorrect
+                            </label>
+                            <input
+                              type="text"
+                              name="marksOnInCorrect"
+                              id="marksOnInCorrect"
+                              defaultValue={question.marksOnIncorrect}
+                              onChange={(e) => {
+                                let quests = [...questions];
+                                quests[index].marksOnIncorrect = parseInt(
+                                  e.target.value
+                                );
                                 setQuestions(quests);
                               }}
                             />

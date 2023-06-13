@@ -148,7 +148,7 @@ export default function MainTest() {
 
   function handleOnLoadRadio(index, id) {
     if (document.getElementById(id) !== null) {
-      if (studentAnswers[index].answer === id[id.length - 1]) {
+      if (studentAnswers[index].answer.includes(id[id.length - 1])) {
         document.getElementById(id).checked = true;
       }
     }
@@ -198,130 +198,340 @@ export default function MainTest() {
                   }}
                   key={-index - 1}
                 >
-                  <label>
-                    <input
-                      type="radio"
-                      name={index}
-                      value="A"
-                      id={index + "a"}
-                      onLoad={handleOnLoadRadio(index, `${index}a`)}
-                      onChange={() => {
-                        let q = studentAnswers;
-                        q[index].answer = "a";
-                        if (
-                          q[index].status === "mr" ||
-                          q[index].status === "amr"
-                        ) {
-                          if (q[index].status === "mr") {
-                            setMarkedForReview(markedForReview + 1);
-                            setAnsweredReview(answeredReview + 1);
-                          }
-                          q[index].status = "amr";
-                        } else {
-                          if (q[index].status === "na") {
-                            setNotAnswered(notAnswered - 1);
-                            setAnswered(answered + 1);
-                          }
-                          q[index].status = "a";
-                        }
-                        setStudentAnswers(q);
-                      }}
-                    />
-                    &nbsp;{question.o1}
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name={index}
-                      value="B"
-                      id={index + "b"}
-                      onLoad={handleOnLoadRadio(index, `${index}b`)}
-                      onChange={() => {
-                        let q = studentAnswers;
-                        q[index].answer = "b";
-                        if (
-                          q[index].status === "mr" ||
-                          q[index].status === "amr"
-                        ) {
-                          if (q[index].status === "mr") {
-                            setMarkedForReview(markedForReview + 1);
-                            setAnsweredReview(answeredReview + 1);
-                          }
-                          q[index].status = "amr";
-                        } else {
-                          if (q[index].status === "na") {
-                            setNotAnswered(notAnswered - 1);
-                            setAnswered(answered + 1);
-                          }
-                          q[index].status = "a";
-                        }
-                        setStudentAnswers(q);
-                      }}
-                    />
-                    &nbsp;{question.o2}
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name={index}
-                      value="C"
-                      id={index + "c"}
-                      onLoad={handleOnLoadRadio(index, `${index}c`)}
-                      onChange={() => {
-                        let q = studentAnswers;
-                        q[index].answer = "c";
-                        if (
-                          q[index].status === "mr" ||
-                          q[index].status === "amr"
-                        ) {
-                          if (q[index].status === "mr") {
-                            setMarkedForReview(markedForReview + 1);
-                            setAnsweredReview(answeredReview + 1);
-                          }
-                          q[index].status = "amr";
-                        } else {
-                          if (q[index].status === "na") {
-                            setNotAnswered(notAnswered - 1);
-                            setAnswered(answered + 1);
-                          }
-                          q[index].status = "a";
-                        }
-                        setStudentAnswers(q);
-                      }}
-                    />
-                    &nbsp;{question.o3}
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name={index}
-                      value="D"
-                      id={index + "d"}
-                      onLoad={handleOnLoadRadio(index, `${index}d`)}
-                      onChange={() => {
-                        let q = studentAnswers;
-                        q[index].answer = "d";
-                        if (
-                          q[index].status === "mr" ||
-                          q[index].status === "amr"
-                        ) {
-                          if (q[index].status === "mr") {
-                            setMarkedForReview(markedForReview + 1);
-                            setAnsweredReview(answeredReview + 1);
-                          }
-                          q[index].status = "amr";
-                        } else {
-                          if (q[index].status === "na") {
-                            setNotAnswered(notAnswered - 1);
-                            setAnswered(answered + 1);
-                          }
-                          q[index].status = "a";
-                        }
-                        setStudentAnswers(q);
-                      }}
-                    />
-                    &nbsp;{question.o4}
-                  </label>
+                  {question.questionType === "somcq" ? (
+                    <>
+                      <label>
+                        <input
+                          type="radio"
+                          name={index}
+                          value="A"
+                          id={index + "a"}
+                          onLoad={handleOnLoadRadio(index, `${index}a`)}
+                          onChange={() => {
+                            let q = studentAnswers;
+                            q[index].answer = "a";
+                            if (
+                              q[index].status === "mr" ||
+                              q[index].status === "amr"
+                            ) {
+                              if (q[index].status === "mr") {
+                                setMarkedForReview(markedForReview + 1);
+                                setAnsweredReview(answeredReview + 1);
+                              }
+                              q[index].status = "amr";
+                            } else {
+                              if (q[index].status === "na") {
+                                setNotAnswered(notAnswered - 1);
+                                setAnswered(answered + 1);
+                              }
+                              q[index].status = "a";
+                            }
+                            setStudentAnswers(q);
+                          }}
+                        />
+                        &nbsp;{question.o1}
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name={index}
+                          value="B"
+                          id={index + "b"}
+                          onLoad={handleOnLoadRadio(index, `${index}b`)}
+                          onChange={() => {
+                            let q = studentAnswers;
+                            q[index].answer = "b";
+                            if (
+                              q[index].status === "mr" ||
+                              q[index].status === "amr"
+                            ) {
+                              if (q[index].status === "mr") {
+                                setMarkedForReview(markedForReview + 1);
+                                setAnsweredReview(answeredReview + 1);
+                              }
+                              q[index].status = "amr";
+                            } else {
+                              if (q[index].status === "na") {
+                                setNotAnswered(notAnswered - 1);
+                                setAnswered(answered + 1);
+                              }
+                              q[index].status = "a";
+                            }
+                            setStudentAnswers(q);
+                          }}
+                        />
+                        &nbsp;{question.o2}
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name={index}
+                          value="C"
+                          id={index + "c"}
+                          onLoad={handleOnLoadRadio(index, `${index}c`)}
+                          onChange={() => {
+                            let q = studentAnswers;
+                            q[index].answer = "c";
+                            if (
+                              q[index].status === "mr" ||
+                              q[index].status === "amr"
+                            ) {
+                              if (q[index].status === "mr") {
+                                setMarkedForReview(markedForReview + 1);
+                                setAnsweredReview(answeredReview + 1);
+                              }
+                              q[index].status = "amr";
+                            } else {
+                              if (q[index].status === "na") {
+                                setNotAnswered(notAnswered - 1);
+                                setAnswered(answered + 1);
+                              }
+                              q[index].status = "a";
+                            }
+                            setStudentAnswers(q);
+                          }}
+                        />
+                        &nbsp;{question.o3}
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name={index}
+                          value="D"
+                          id={index + "d"}
+                          onLoad={handleOnLoadRadio(index, `${index}d`)}
+                          onChange={() => {
+                            let q = studentAnswers;
+                            q[index].answer = "d";
+                            if (
+                              q[index].status === "mr" ||
+                              q[index].status === "amr"
+                            ) {
+                              if (q[index].status === "mr") {
+                                setMarkedForReview(markedForReview + 1);
+                                setAnsweredReview(answeredReview + 1);
+                              }
+                              q[index].status = "amr";
+                            } else {
+                              if (q[index].status === "na") {
+                                setNotAnswered(notAnswered - 1);
+                                setAnswered(answered + 1);
+                              }
+                              q[index].status = "a";
+                            }
+                            setStudentAnswers(q);
+                          }}
+                        />
+                        &nbsp;{question.o4}
+                      </label>
+                    </>
+                  ) : question.questionType === "momcq" ? (
+                    <>
+                      <label>
+                        <input
+                          type="radio"
+                          name={index + "a"}
+                          value="A"
+                          id={index + "a"}
+                          onLoad={handleOnLoadRadio(index, `${index}a`)}
+                          onClick={(e) => {
+                            let q = studentAnswers;
+                            if (q[index].answer.includes("a"))
+                              q[index].answer = q[index].answer.replace(
+                                "a",
+                                ""
+                              );
+                            else q[index].answer += "a";
+                            e.target.checked = !e.target.checked;
+                            setStudentAnswers(q);
+                          }}
+                          onChange={() => {
+                            let q = studentAnswers;
+
+                            if (!q[index].answer.includes("a"))
+                              q[index].answer += "a";
+                            if (
+                              q[index].status === "mr" ||
+                              q[index].status === "amr"
+                            ) {
+                              if (q[index].status === "mr") {
+                                setMarkedForReview(markedForReview + 1);
+                                setAnsweredReview(answeredReview + 1);
+                              }
+                              q[index].status = "amr";
+                            } else {
+                              if (q[index].status === "na") {
+                                setNotAnswered(notAnswered - 1);
+                                setAnswered(answered + 1);
+                              }
+                              q[index].status = "a";
+                            }
+                            setStudentAnswers(q);
+                          }}
+                        />
+                        &nbsp;{question.o1}
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name={index + "b"}
+                          value="B"
+                          id={index + "b"}
+                          onLoad={handleOnLoadRadio(index, `${index}b`)}
+                          onClick={(e) => {
+                            let q = studentAnswers;
+                            if (q[index].answer.includes("b"))
+                              q[index].answer = q[index].answer.replace(
+                                "b",
+                                ""
+                              );
+                            else q[index].answer += "b";
+                            e.target.checked = !e.target.checked;
+                            setStudentAnswers(q);
+                          }}
+                          onChange={() => {
+                            let q = studentAnswers;
+                            if (!q[index].answer.includes("b"))
+                              q[index].answer += "b";
+                            if (
+                              q[index].status === "mr" ||
+                              q[index].status === "amr"
+                            ) {
+                              if (q[index].status === "mr") {
+                                setMarkedForReview(markedForReview + 1);
+                                setAnsweredReview(answeredReview + 1);
+                              }
+                              q[index].status = "amr";
+                            } else {
+                              if (q[index].status === "na") {
+                                setNotAnswered(notAnswered - 1);
+                                setAnswered(answered + 1);
+                              }
+                              q[index].status = "a";
+                            }
+                            setStudentAnswers(q);
+                          }}
+                        />
+                        &nbsp;{question.o2}
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name={index + "c"}
+                          value="C"
+                          id={index + "c"}
+                          onLoad={handleOnLoadRadio(index, `${index}c`)}
+                          onClick={(e) => {
+                            let q = studentAnswers;
+                            if (q[index].answer.includes("c"))
+                              q[index].answer = q[index].answer.replace(
+                                "c",
+                                ""
+                              );
+                            else q[index].answer += "c";
+                            e.target.checked = !e.target.checked;
+                            setStudentAnswers(q);
+                          }}
+                          onChange={() => {
+                            let q = studentAnswers;
+                            if (!q[index].answer.includes("c"))
+                              q[index].answer += "c";
+                            if (
+                              q[index].status === "mr" ||
+                              q[index].status === "amr"
+                            ) {
+                              if (q[index].status === "mr") {
+                                setMarkedForReview(markedForReview + 1);
+                                setAnsweredReview(answeredReview + 1);
+                              }
+                              q[index].status = "amr";
+                            } else {
+                              if (q[index].status === "na") {
+                                setNotAnswered(notAnswered - 1);
+                                setAnswered(answered + 1);
+                              }
+                              q[index].status = "a";
+                            }
+                            setStudentAnswers(q);
+                          }}
+                        />
+                        &nbsp;{question.o3}
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name={index + "d"}
+                          value="D"
+                          id={index + "d"}
+                          onLoad={handleOnLoadRadio(index, `${index}d`)}
+                          onClick={(e) => {
+                            let q = studentAnswers;
+                            if (q[index].answer.includes("d"))
+                              q[index].answer = q[index].answer.replace(
+                                "d",
+                                ""
+                              );
+                            else q[index].answer += "d";
+                            e.target.checked = !e.target.checked;
+                            setStudentAnswers(q);
+                          }}
+                          onChange={() => {
+                            let q = studentAnswers;
+                            if (
+                              q[index].status === "mr" ||
+                              q[index].status === "amr"
+                            ) {
+                              if (q[index].status === "mr") {
+                                setMarkedForReview(markedForReview + 1);
+                                setAnsweredReview(answeredReview + 1);
+                              }
+                              q[index].status = "amr";
+                            } else {
+                              if (q[index].status === "na") {
+                                setNotAnswered(notAnswered - 1);
+                                setAnswered(answered + 1);
+                              }
+                              q[index].status = "a";
+                            }
+                            setStudentAnswers(q);
+                          }}
+                        />
+                        &nbsp;{question.o4}
+                      </label>
+                    </>
+                  ) : (
+                    <>
+                      <label>
+                        <input
+                          type="text"
+                          name={index}
+                          defaultValue={studentAnswers[index].answer}
+                          id={index}
+                          onChange={(e) => {
+                            let q = studentAnswers;
+                            q[index].answer = e.target.value;
+                            if (
+                              q[index].status === "mr" ||
+                              q[index].status === "amr"
+                            ) {
+                              if (q[index].status === "mr") {
+                                setMarkedForReview(markedForReview + 1);
+                                setAnsweredReview(answeredReview + 1);
+                              }
+                              q[index].status = "amr";
+                            } else {
+                              if (q[index].status === "na") {
+                                setNotAnswered(notAnswered - 1);
+                                setAnswered(answered + 1);
+                              }
+                              q[index].status = "a";
+                            }
+                            setStudentAnswers(q);
+                          }}
+                        />
+                      </label>
+                    </>
+                  )}
                 </div>
               </>
             );
@@ -375,11 +585,16 @@ export default function MainTest() {
               setMarkedForReview(markedForReview + 1);
             }
             q[currentQuestionIndex].answer = "";
-            setStudentAnswers(q);
-            let radio = document.getElementsByName(currentQuestionIndex);
-            for (let i = 0; i < radio.length; i++) {
-              radio[i].checked = false;
+            if (questions[currentQuestionIndex].questionType.includes("mcq")) {
+              let radio = document.getElementsByName(currentQuestionIndex);
+              for (let i = 0; i < radio.length; i++) {
+                radio[i].checked = false;
+              }
+            } else {
+              let text = document.getElementById(currentQuestionIndex);
+              text.value = "";
             }
+            setStudentAnswers(q);
           }}
         >
           Clear Response
