@@ -26,6 +26,13 @@ body {
   margin: 0px 10px 0px 10px;
   font-weight: bold;
 }
+
+.calc{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .left {
   margin-right: 250px;
 }

@@ -5,6 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import RLCicon from "../assets/images/rlc-icon.png";
+import CalculatorIcon from "../assets/images/calculator.jpeg";
 
 export default function MainTest() {
   const [testStartTime, setTestStartTime] = useState(null);
@@ -159,8 +160,22 @@ export default function MainTest() {
       <header style={{ backgroundColor: "#3b5998" }}>
         <img src={RLCicon} height="80" alt="banner" />
       </header>
-      <div id="exam_name" className="left">
+      <div id="exam_name" className="calc left">
         <div className="exam_names">RLC GATE TEST 1</div>
+        <button style={{ height: "32px", width: "32px", overflow: "hidden" }}>
+          <img
+            src={CalculatorIcon}
+            style={{ cursor: "pointer", height: "30px", width: "30px" }}
+            alt="calculator"
+            onClick={() => {
+              window.open(
+                "https://www.tcsion.com/OnlineAssessment/ScientificCalculator/Calculator.html",
+                "Calculator",
+                "width=480,height=340"
+              );
+            }}
+          />
+        </button>
       </div>
       <div id="time" className="left">
         <div id="time_left">Time Left: {timeLeft}</div>
