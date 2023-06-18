@@ -99,17 +99,18 @@ export default function MainTest() {
     saveAnswers(user.email);
     updateDoc(doc(db, "students", studentID), {
       attended: true,
+    }).then(() => {
+      signOut(auth)
+        .then(() => {
+          console.log("Signed out successfully!");
+          navigate("/");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+        });
     });
-    signOut(auth)
-      .then(() => {
-        console.log("Signed out successfully!");
-        navigate("/");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
   }
 
   function changeStatus() {
@@ -349,6 +350,7 @@ export default function MainTest() {
                           value="A"
                           id={index + "a"}
                           onLoad={handleOnLoadRadio(index, `${index}a`)}
+                          checked={studentAnswers[index].answer.includes("a")}
                           onClick={(e) => {
                             let q = studentAnswers;
                             if (q[index].answer.includes("a"))
@@ -393,6 +395,7 @@ export default function MainTest() {
                           value="B"
                           id={index + "b"}
                           onLoad={handleOnLoadRadio(index, `${index}b`)}
+                          checked={studentAnswers[index].answer.includes("b")}
                           onClick={(e) => {
                             let q = studentAnswers;
                             if (q[index].answer.includes("b"))
@@ -436,6 +439,7 @@ export default function MainTest() {
                           value="C"
                           id={index + "c"}
                           onLoad={handleOnLoadRadio(index, `${index}c`)}
+                          checked={studentAnswers[index].answer.includes("c")}
                           onClick={(e) => {
                             let q = studentAnswers;
                             if (q[index].answer.includes("c"))
@@ -479,6 +483,7 @@ export default function MainTest() {
                           value="D"
                           id={index + "d"}
                           onLoad={handleOnLoadRadio(index, `${index}d`)}
+                          checked={studentAnswers[index].answer.includes("d")}
                           onClick={(e) => {
                             let q = studentAnswers;
                             if (q[index].answer.includes("d"))
