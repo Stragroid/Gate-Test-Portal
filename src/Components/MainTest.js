@@ -185,7 +185,14 @@ export default function MainTest() {
       <div id="question_area_scrollable" className="left">
         <div className="question-title">
           <div id="question-title">
-            Question no. {currentQuestionIndex + 1}{" "}
+            Question no. {currentQuestionIndex + 1}
+            {" ("}
+            {questions[currentQuestionIndex].questionType === "somcq"
+              ? "Single Correct"
+              : questions[currentQuestionIndex].questionType === "momcq"
+              ? "Multiple Correct"
+              : "Numerical"}
+            {")"}
           </div>
         </div>
         {/* <img

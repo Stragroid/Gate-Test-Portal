@@ -174,10 +174,13 @@ export default function QuestionEditor() {
                 {questions !== null
                   ? questions.map((question, index) => {
                       return (
-                        <div className={"q" + (index + 1)} key={index + 1}>
+                        <div
+                          className={"editableQuestion q" + (index + 1)}
+                          key={index + 1}
+                        >
                           <div className="q">
                             <label htmlFor="question">Question</label>
-                            <input
+                            <textarea
                               type="text"
                               name="question"
                               id="question"
@@ -312,15 +315,21 @@ export default function QuestionEditor() {
                               }}
                             />
                           </div>
-                          <button onClick={removeQuestion(index)}>
-                            Remove
+                          <button
+                            className="removeBtn"
+                            onClick={removeQuestion(index)}
+                          >
+                            Remove Question
                           </button>
                         </div>
                       );
                     })
                   : null}
               </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
+              <button className="addQuestionBtn" onClick={addQuestion}>
+                Add a question
+              </button>
+              <div style={{ display: "flex", flexDirection: "row" }} className="questions">
                 <label htmlFor="testStartTime">Start Of Test: </label>
                 <input
                   type="datetime-local"
@@ -332,7 +341,7 @@ export default function QuestionEditor() {
                   }}
                 />
               </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
+              <div style={{ display: "flex", flexDirection: "row" }} className="questions">
                 <label htmlFor="testDuration">Duration(in minutes): </label>
                 <input
                   type="text"
@@ -344,14 +353,27 @@ export default function QuestionEditor() {
                   }}
                 />
               </div>
-              <button onClick={changeStatus}>
-                Make Test {online ? "Offline" : "Online"}
-              </button>
-              <button onClick={updateStudentDB}>Update Student Database</button>
-              <button onClick={uploadTest}>Upload Test</button>
-              <button onClick={addQuestion}>Add a question</button>
-              <button onClick={clearTest}>Clear test</button>
-              <button onClick={logout}>Logout</button>
+              <div className="btnGroup">
+                <button
+                  className="btn"
+                  id="makeTestOnlineBtn"
+                  onClick={changeStatus}
+                >
+                  Make Test {online ? "Offline" : "Online"}
+                </button>
+                <button className="btn" id="updateStudentBtn" onClick={updateStudentDB}>
+                  Update Student Database
+                </button>
+                <button className="btn" id="uploadTestBtn" onClick={uploadTest}>
+                  Upload Test
+                </button>
+                <button className="btn" id="clearTestBtn" onClick={clearTest}>
+                  Clear test
+                </button>
+                <button className="btn" id="logOutBtn" onClick={logout}>
+                  Logout
+                </button>
+              </div>
             </>
           ) : null
         ) : (

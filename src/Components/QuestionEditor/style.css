@@ -10,3 +10,128 @@
 .marksOnInCorrect {
   overflow-y: hidden;
 }
+
+.q,
+.o1,
+.o2,
+.o3,
+.o4,
+.answer,
+.questionType,
+.marksOnCorrect,
+.marksOnInCorrect {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.questions {
+  padding: 5px 10px;
+}
+
+.questions label {
+  font-size: 1.2em;
+  font-weight: bold;
+  width: 160px;
+}
+
+.questions input,
+select {
+  width: 100%;
+  height: 30px;
+  padding: 5px;
+  border: 1px solid #313131;
+  outline: none;
+}
+
+.editableQuestion {
+  padding: 5px 10px;
+  margin-bottom: 15px;
+  border: 1px solid #313131;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+}
+
+#question {
+  height: 100px;
+  /* width: 800px; */
+  width: 100%;
+  resize: none;
+  padding: 3px;
+}
+
+.removeBtn,
+.addQuestionBtn {
+  padding: 5px;
+  margin: 10px 15px;
+  width: 97%;
+  transition: 0.5s;
+}
+
+.removeBtn:hover {
+  cursor: pointer;
+  background-color: rgb(255, 97, 97);
+  /* box-shadow: 0 0 5px rgb(255, 97, 97); */
+  box-shadow: 0 0 5px rgb(0, 0, 0);
+}
+
+.addQuestionBtn:hover {
+  cursor: pointer;
+  background-color: rgb(0, 255, 0);
+  box-shadow: 0 0 5px rgb(0, 0, 0);
+}
+
+.btnGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.btn {
+  margin: 0 5px;
+  margin-bottom: 10px;
+  width: 150px;
+  height: 50px;
+  border-radius: 30px;
+  padding: 10px;
+  outline: none;
+  border: 1px solid #313131;
+  background-color: white;
+  overflow-y: hidden;
+  transition: 0.5s;
+}
+
+.btn:hover {
+  cursor: pointer;
+  background-color: rgb(211, 211, 211);
+}
+
+#makeTestOnlineBtn:hover {
+  background-color: rgba(66, 255, 120, 0.934);
+  box-shadow: 0 0 5px rgb(0, 0, 0);
+}
+
+#updateStudentBtn:hover {
+  background-color: rgb(97, 255, 215);
+  box-shadow: 0 0 5px rgb(0, 0, 0);
+}
+
+#uploadTestBtn:hover{
+  background-color: rgb(204, 255, 0);
+  box-shadow: 0 0 5px rgb(0, 0, 0);
+}
+
+#clearTestBtn:hover {
+  background-color: rgb(255, 97, 97);
+  box-shadow: 0 0 5px rgb(0, 0, 0);
+}
+
+#logOutBtn:hover {
+  background-color: rgb(255, 160, 96);
+  box-shadow: 0 0 5px rgb(0, 0, 0);
+}
