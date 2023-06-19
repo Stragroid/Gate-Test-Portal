@@ -1,0 +1,44 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+  font-size: 1.1em;
+}
+
+th {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+  background-color: #ddd;
+}
+
+td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.downloadBtns {
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.downloadBtn {
+  padding: 10px;
+  transition: 0.5s;
+}
+
+.downloadBtnText {
+  text-decoration: none;
+  color: #000;
+}
+
+.downloadBtn:hover {
+  cursor: pointer;
+  background-color: #ddd;
+}
