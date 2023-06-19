@@ -357,7 +357,7 @@ export default function MainTest() {
                           value="A"
                           id={index + "a"}
                           onLoad={handleOnLoadRadio(index, `${index}a`)}
-                          checked={studentAnswers[index].answer.includes("a")}
+                          // checked={studentAnswers[index].answer.includes("a")}
                           onClick={(e) => {
                             let q = studentAnswers;
                             if (q[index].answer.includes("a"))
@@ -402,7 +402,7 @@ export default function MainTest() {
                           value="B"
                           id={index + "b"}
                           onLoad={handleOnLoadRadio(index, `${index}b`)}
-                          checked={studentAnswers[index].answer.includes("b")}
+                          // checked={studentAnswers[index].answer.includes("b")}
                           onClick={(e) => {
                             let q = studentAnswers;
                             if (q[index].answer.includes("b"))
@@ -446,7 +446,7 @@ export default function MainTest() {
                           value="C"
                           id={index + "c"}
                           onLoad={handleOnLoadRadio(index, `${index}c`)}
-                          checked={studentAnswers[index].answer.includes("c")}
+                          // checked={studentAnswers[index].answer.includes("c")}
                           onClick={(e) => {
                             let q = studentAnswers;
                             if (q[index].answer.includes("c"))
@@ -490,7 +490,7 @@ export default function MainTest() {
                           value="D"
                           id={index + "d"}
                           onLoad={handleOnLoadRadio(index, `${index}d`)}
-                          checked={studentAnswers[index].answer.includes("d")}
+                          // checked={studentAnswers[index].answer.includes("d")}
                           onClick={(e) => {
                             let q = studentAnswers;
                             if (q[index].answer.includes("d"))
@@ -612,11 +612,28 @@ export default function MainTest() {
               setMarkedForReview(markedForReview + 1);
             }
             q[currentQuestionIndex].answer = "";
-            if (questions[currentQuestionIndex].questionType.includes("mcq")) {
+            if (
+              questions[currentQuestionIndex].questionType.includes("somcq")
+            ) {
               let radio = document.getElementsByName(currentQuestionIndex);
               for (let i = 0; i < radio.length; i++) {
                 radio[i].checked = false;
               }
+            } else if (
+              questions[currentQuestionIndex].questionType.includes("momcq")
+            ) {
+              document.getElementsByName(
+                currentQuestionIndex + "a"
+              )[0].checked = false;
+              document.getElementsByName(
+                currentQuestionIndex + "b"
+              )[0].checked = false;
+              document.getElementsByName(
+                currentQuestionIndex + "c"
+              )[0].checked = false;
+              document.getElementsByName(
+                currentQuestionIndex + "d"
+              )[0].checked = false;
             } else {
               let text = document.getElementById(currentQuestionIndex);
               text.value = "";
