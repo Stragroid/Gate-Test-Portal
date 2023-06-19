@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { db } from "../../firebaseConfig";
-import { collection, query, getDocs, updateDoc, doc } from "firebase/firestore";
+import { collection, query, getDocs } from "firebase/firestore";
 import "./style.css";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 export default function StudentsSection() {
   const [students, setStudents] = useState([]);

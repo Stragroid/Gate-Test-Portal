@@ -417,7 +417,7 @@ label {
   background-color: #fff;
 }
 
-/* mjx-c,
+mjx-c,
 mjx-mo,
 mjx-mn,
 mjx-mi,
@@ -425,7 +425,7 @@ mjx-mtext,
 mjx-mspace,
 mjx-msub {
   overflow-y: hidden;
-} */
+}
 
 /* Apply style to all tags starting with mjx- */
 

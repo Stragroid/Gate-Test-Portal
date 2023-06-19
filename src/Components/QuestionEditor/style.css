@@ -7,7 +7,8 @@
 .answer,
 .questionType,
 .marksOnCorrect,
-.marksOnInCorrect {
+.marksOnInCorrect,
+.questionImageUpload {
   overflow-y: hidden;
 }
 
@@ -19,7 +20,8 @@
 .answer,
 .questionType,
 .marksOnCorrect,
-.marksOnInCorrect {
+.marksOnInCorrect,
+.questionImageUpload {
   display: flex;
   justify-content: space-between;
   align-items: center;

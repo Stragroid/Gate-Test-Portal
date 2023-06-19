@@ -1,5 +1,5 @@
 import "./style.css";
-import { db, auth } from "../../firebaseConfig";
+import { db, auth, storage } from "../../firebaseConfig";
 import {
   collection,
   query,
@@ -10,6 +10,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { signOut } from "firebase/auth";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -35,9 +36,12 @@ export default function QuestionEditor() {
         setQuestionCount(map.size);
         let quests = [];
         map.forEach(function (value, key) {
+          if(!value.questionImageUrl || value.questionImageUrl === '')
+            value.questionImageUrl = '';
           quests.push(value);
         });
         setQuestions(quests);
+        //https://firebasestorage.googleapis.com/v0/b/rlc-gate-test-portal.appspot.com/o/q1?alt=media
         setTestStartTimestamp(doc.data().startTime.toDate());
         setTestDuration(doc.data().duration);
       });
@@ -106,6 +110,7 @@ export default function QuestionEditor() {
       let questionType = questions[i].questionType;
       let marksOnCorrect = questions[i].marksOnCorrect;
       let marksOnIncorrect = questions[i].marksOnIncorrect;
+      let questionImageUrl = questions[i].questionImageUrl;
       newQuestions[i + 1] = {
         q: q,
         o1: o1,
@@ -116,6 +121,7 @@ export default function QuestionEditor() {
         questionType: questionType,
         marksOnCorrect: marksOnCorrect,
         marksOnIncorrect: marksOnIncorrect,
+        questionImageUrl: questionImageUrl,
       };
     }
     let test = {
@@ -315,6 +321,72 @@ export default function QuestionEditor() {
                               }}
                             />
                           </div>
+                          <div className="questionImageUpload">
+                            <label htmlFor="questionImageUpload">
+                              Upload Image
+                            </label>
+                            {/* {questions[index].questionImageUrl !== "" ? ( */}
+                            <img
+                              id={`questionImage${index + 1}`}
+                              src={questions[index].questionImageUrl}
+                              alt="questionImage"
+                              style={{
+                                display:
+                                  questions[index].questionImageUrl !== ""
+                                    ? "block"
+                                    : "none",
+                              }}
+                            />
+                            {/* ) : ( */}
+                            <p
+                              id={`questionImageText${index + 1}`}
+                              style={{
+                                display:
+                                  questions[index].questionImageUrl === ""
+                                    ? "block"
+                                    : "none",
+                              }}
+                            >
+                              No image for this question
+                            </p>
+                            {/* )} */}
+
+                            <input
+                              type="file"
+                              name="questionImageUpload"
+                              id="questionImageUpload"
+                              onChange={(e) => {
+                                const name = `q${index + 1}`;
+                                const REF = ref(storage, name);
+                                const file = e.target.files[0];
+                                const metadata = {
+                                  contentType: file.type,
+                                };
+                                uploadBytes(REF, file, metadata)
+                                  .then((snapshot) => {
+                                    let temp = questions;
+                                    temp[
+                                      index
+                                    ].questionImageUrl = `https://firebasestorage.googleapis.com/v0/b/rlc-gate-test-portal.appspot.com/o/q${
+                                      index + 1
+                                    }?alt=media`;
+                                    setQuestions(temp);
+                                    document.getElementById(
+                                      `questionImage${index + 1}`
+                                    ).src = URL.createObjectURL(e.target.files[0]);
+                                    document.getElementById(
+                                      `questionImage${index + 1}`
+                                    ).style.display = "block";
+                                    document.getElementById(
+                                      `questionImageText${index + 1}`
+                                    ).style.display = "none";
+                                    console.log(`Image for ${name} uploaded`);
+                                  })
+                                  .catch(console.error);
+                                // console.log(e.target.files[0]);
+                              }}
+                            />
+                          </div>
                           <button
                             className="removeBtn"
                             onClick={removeQuestion(index)}
@@ -329,7 +401,10 @@ export default function QuestionEditor() {
               <button className="addQuestionBtn" onClick={addQuestion}>
                 Add a question
               </button>
-              <div style={{ display: "flex", flexDirection: "row" }} className="questions">
+              <div
+                style={{ display: "flex", flexDirection: "row" }}
+                className="questions"
+              >
                 <label htmlFor="testStartTime">Start Of Test: </label>
                 <input
                   type="datetime-local"
@@ -341,7 +416,10 @@ export default function QuestionEditor() {
                   }}
                 />
               </div>
-              <div style={{ display: "flex", flexDirection: "row" }} className="questions">
+              <div
+                style={{ display: "flex", flexDirection: "row" }}
+                className="questions"
+              >
                 <label htmlFor="testDuration">Duration(in minutes): </label>
                 <input
                   type="text"
@@ -361,7 +439,11 @@ export default function QuestionEditor() {
                 >
                   Make Test {online ? "Offline" : "Online"}
                 </button>
-                <button className="btn" id="updateStudentBtn" onClick={updateStudentDB}>
+                <button
+                  className="btn"
+                  id="updateStudentBtn"
+                  onClick={updateStudentDB}
+                >
                   Update Student Database
                 </button>
                 <button className="btn" id="uploadTestBtn" onClick={uploadTest}>
