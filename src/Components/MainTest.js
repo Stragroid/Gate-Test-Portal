@@ -41,6 +41,7 @@ export default function MainTest() {
           map.forEach(function (value, key) {
             quests.push(value);
           });
+          // console.log(quests);
           setQuestions(quests);
         });
       })
@@ -213,7 +214,25 @@ export default function MainTest() {
                   key={index + 1}
                 >
                   {question.q}
+                  <div
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <img
+                      src={question.questionImageUrl}
+                      alt="questionImage"
+                      style={{
+                        display:
+                          question.questionImageUrl !== "" ? "block" : "none",
+                      }}
+                    />
+                  </div>
                 </div>
+
                 <div
                   className="answers"
                   style={{
