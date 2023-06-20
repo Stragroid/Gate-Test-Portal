@@ -123,7 +123,7 @@ select {
   box-shadow: 0 0 5px rgb(0, 0, 0);
 }
 
-#uploadTestBtn:hover{
+#uploadTestBtn:hover {
   background-color: rgb(204, 255, 0);
   box-shadow: 0 0 5px rgb(0, 0, 0);
 }
@@ -136,4 +136,88 @@ select {
 #logOutBtn:hover {
   background-color: rgb(255, 160, 96);
   box-shadow: 0 0 5px rgb(0, 0, 0);
+}
+
+.mainDivOption {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border: 1px solid #313131;
+  padding: 10px;
+}
+
+.optionText {
+  width: 50%;
+  margin-right: 4px;
+}
+
+.optionText input {
+  width: 94%;
+  height: 30px;
+  padding: 5px;
+  border: 1px solid #313131;
+  outline: none;
+}
+
+.optionImage {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.optionImage img,p {
+  width: 200px;
+  height: auto;
+  margin-right: 5px;
+  /* height: 40px; */
+}
+
+.imageConsole {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.removeImageBtn {
+  margin-top: 10px;
+  padding: 5px;
+  width: 100px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid #313131;
+  background-color: white;
+  transition: 0.5s;
+}
+
+.removeImageBtn:hover {
+  cursor: pointer;
+  background-color: rgb(255, 97, 97);
+  box-shadow: 0 0 5px rgb(0, 0, 0);
+}
+
+.imageUploadInput {
+  width: 200px;
+}
+
+input[type="file"] {
+  width: 90%;
+}
+
+input[type="file"]::file-selector-button {
+  border: 2px solid #6c5ce7;
+  padding: 0.2em 0.4em;
+  border-radius: 0.2em;
+  background-color: #a29bfe;
+  transition: 1s;
+}
+
+input[type="file"]::file-selector-button:hover {
+  cursor: pointer;
+  background-color: #81ecec;
+  border: 2px solid #00cec9;
 }

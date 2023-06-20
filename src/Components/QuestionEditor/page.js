@@ -10,7 +10,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { signOut } from "firebase/auth";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, ref, uploadBytes } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -36,8 +36,16 @@ export default function QuestionEditor() {
         setQuestionCount(map.size);
         let quests = [];
         map.forEach(function (value, key) {
-          if(!value.questionImageUrl || value.questionImageUrl === '')
-            value.questionImageUrl = '';
+          if (!value.questionImageUrl || value.questionImageUrl === "")
+            value.questionImageUrl = "";
+          if (!value.optionImageA || value.optionImageA === "")
+            value.optionImageA = "";
+          if (!value.optionImageB || value.optionImageB === "")
+            value.optionImageB = "";
+          if (!value.optionImageC || value.optionImageC === "")
+            value.optionImageC = "";
+          if (!value.optionImageD || value.optionImageD === "")
+            value.optionImageD = "";
           quests.push(value);
         });
         setQuestions(quests);
@@ -111,6 +119,10 @@ export default function QuestionEditor() {
       let marksOnCorrect = questions[i].marksOnCorrect;
       let marksOnIncorrect = questions[i].marksOnIncorrect;
       let questionImageUrl = questions[i].questionImageUrl;
+      let optionImageA = questions[i].optionImageA;
+      let optionImageB = questions[i].optionImageB;
+      let optionImageC = questions[i].optionImageC;
+      let optionImageD = questions[i].optionImageD;
       newQuestions[i + 1] = {
         q: q,
         o1: o1,
@@ -122,6 +134,10 @@ export default function QuestionEditor() {
         marksOnCorrect: marksOnCorrect,
         marksOnIncorrect: marksOnIncorrect,
         questionImageUrl: questionImageUrl,
+        optionImageA: optionImageA,
+        optionImageB: optionImageB,
+        optionImageC: optionImageC,
+        optionImageD: optionImageD,
       };
     }
     let test = {
@@ -200,59 +216,511 @@ export default function QuestionEditor() {
                           </div>
                           <div className="o1">
                             <label htmlFor="option1">Option 1</label>
-                            <input
-                              type="text"
-                              name="option1"
-                              id="option1"
-                              defaultValue={question.o1}
-                              onChange={(e) => {
-                                let quests = [...questions];
-                                quests[index].o1 = e.target.value;
-                                setQuestions(quests);
-                              }}
-                            />
+                            <div className="mainDivOption">
+                              <div className="optionText">
+                                <input
+                                  type="text"
+                                  name="option1"
+                                  id="option1"
+                                  defaultValue={question.o1}
+                                  placeholder="Enter text for option 1"
+                                  onChange={(e) => {
+                                    let quests = [...questions];
+                                    quests[index].o1 = e.target.value;
+                                    setQuestions(quests);
+                                  }}
+                                />
+                              </div>
+                              <div className="optionImage">
+                                <img
+                                  id={`optionImageA${index + 1}`}
+                                  src={questions[index].optionImageA}
+                                  alt="optionImageA"
+                                  style={{
+                                    display:
+                                      questions[index].optionImageA !== ""
+                                        ? "block"
+                                        : "none",
+                                  }}
+                                />
+                                <p
+                                  id={`optionImageTextA${index + 1}`}
+                                  style={{
+                                    display:
+                                      questions[index].optionImageA === ""
+                                        ? "block"
+                                        : "none",
+                                  }}
+                                >
+                                  No image for this option
+                                </p>
+                                <div className="imageConsole">
+                                  <input
+                                    type="file"
+                                    name="questionImageUpload"
+                                    className="imageUploadInput"
+                                    id={`optionImageUploadA${index + 1}`}
+                                    onChange={(e) => {
+                                      const name = `q${index + 1}A`;
+                                      const REF = ref(storage, name);
+                                      const file = e.target.files[0];
+                                      const metadata = {
+                                        contentType: file.type,
+                                      };
+                                      uploadBytes(REF, file, metadata)
+                                        .then((snapshot) => {
+                                          let temp = questions;
+                                          temp[
+                                            index
+                                          ].optionImageA = `https://firebasestorage.googleapis.com/v0/b/rlc-gate-test-portal.appspot.com/o/q${
+                                            index + 1
+                                          }A?alt=media`;
+                                          setQuestions(temp);
+                                          document.getElementById(
+                                            `optionImageA${index + 1}`
+                                          ).src = URL.createObjectURL(
+                                            e.target.files[0]
+                                          );
+                                          document.getElementById(
+                                            `optionImageA${index + 1}`
+                                          ).style.display = "block";
+                                          document.getElementById(
+                                            `optionImageTextA${index + 1}`
+                                          ).style.display = "none";
+                                          document.getElementById(
+                                            `removeImageBtnA${index + 1}`
+                                          ).style.display = "block";
+                                          console.log(
+                                            `Image for ${name} uploaded`
+                                          );
+                                        })
+                                        .catch(console.error);
+                                      // console.log(e.target.files[0]);
+                                    }}
+                                  />
+                                  <button
+                                    onClick={(e) => {
+                                      let temp = questions;
+                                      temp[index].optionImageA = "";
+                                      setQuestions(temp);
+                                      document.getElementById(
+                                        `optionImageA${index + 1}`
+                                      ).style.display = "none";
+                                      document.getElementById(
+                                        `optionImageTextA${index + 1}`
+                                      ).style.display = "block";
+                                      e.target.style.display = "none";
+                                      document.getElementById(
+                                        `optionImageUploadA${index + 1}`
+                                      ).value = "";
+                                      // Remove from database
+                                      const name = `q${index + 1}A`;
+                                      const REF = ref(storage, name);
+                                      deleteObject(REF)
+                                        .then(() => {
+                                          console.log(
+                                            `Image for ${name} deleted`
+                                          );
+                                        })
+                                        .catch((error) => {
+                                          console.log(error);
+                                        });
+                                    }}
+                                    className="removeImageBtn"
+                                    id={`removeImageBtnA${index + 1}`}
+                                    style={{
+                                      display:
+                                        questions[index].optionImageA !== ""
+                                          ? "block"
+                                          : "none",
+                                    }}
+                                  >
+                                    Remove Image
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                           <div className="o2">
                             <label htmlFor="option2">Option 2</label>
-                            <input
-                              type="text"
-                              name="option2"
-                              id="option2"
-                              defaultValue={question.o2}
-                              onChange={(e) => {
-                                let quests = [...questions];
-                                quests[index].o2 = e.target.value;
-                                setQuestions(quests);
-                              }}
-                            />
+                            <div className="mainDivOption">
+                              <div className="optionText">
+                                <input
+                                  type="text"
+                                  name="option2"
+                                  id="option2"
+                                  placeholder="Enter text for option 2"
+                                  defaultValue={question.o2}
+                                  onChange={(e) => {
+                                    let quests = [...questions];
+                                    quests[index].o2 = e.target.value;
+                                    setQuestions(quests);
+                                  }}
+                                />
+                              </div>
+                              <div className="optionImage">
+                                <img
+                                  id={`optionImageB${index + 1}`}
+                                  src={questions[index].optionImageB}
+                                  alt="optionImageB"
+                                  style={{
+                                    display:
+                                      questions[index].optionImageB !== ""
+                                        ? "block"
+                                        : "none",
+                                  }}
+                                />
+                                <p
+                                  id={`optionImageTextB${index + 1}`}
+                                  style={{
+                                    display:
+                                      questions[index].optionImageB === ""
+                                        ? "block"
+                                        : "none",
+                                  }}
+                                >
+                                  No image for this option
+                                </p>
+                                <div className="imageConsole">
+                                  <input
+                                    type="file"
+                                    name="questionImageUpload"
+                                    className="imageUploadInput"
+                                    id={`optionImageUploadB${index + 1}`}
+                                    onChange={(e) => {
+                                      const name = `q${index + 1}B`;
+                                      const REF = ref(storage, name);
+                                      const file = e.target.files[0];
+                                      const metadata = {
+                                        contentType: file.type,
+                                      };
+                                      uploadBytes(REF, file, metadata)
+                                        .then((snapshot) => {
+                                          let temp = questions;
+                                          temp[
+                                            index
+                                          ].optionImageB = `https://firebasestorage.googleapis.com/v0/b/rlc-gate-test-portal.appspot.com/o/q${
+                                            index + 1
+                                          }B?alt=media`;
+                                          setQuestions(temp);
+                                          document.getElementById(
+                                            `optionImageB${index + 1}`
+                                          ).src = URL.createObjectURL(
+                                            e.target.files[0]
+                                          );
+                                          document.getElementById(
+                                            `optionImageB${index + 1}`
+                                          ).style.display = "block";
+                                          document.getElementById(
+                                            `optionImageTextB${index + 1}`
+                                          ).style.display = "none";
+                                          document.getElementById(
+                                            `removeImageBtnB${index + 1}`
+                                          ).style.display = "block";
+                                          console.log(
+                                            `Image for ${name} uploaded`
+                                          );
+                                        })
+                                        .catch(console.error);
+                                      // console.log(e.target.files[0]);
+                                    }}
+                                  />
+                                  <button
+                                    onClick={(e) => {
+                                      let temp = questions;
+                                      temp[index].optionImageB = "";
+                                      setQuestions(temp);
+                                      document.getElementById(
+                                        `optionImageB${index + 1}`
+                                      ).style.display = "none";
+                                      document.getElementById(
+                                        `optionImageTextB${index + 1}`
+                                      ).style.display = "block";
+                                      e.target.style.display = "none";
+                                      document.getElementById(
+                                        `optionImageUploadB${index + 1}`
+                                      ).value = "";
+                                      // Remove from database
+                                      const name = `q${index + 1}B`;
+                                      const REF = ref(storage, name);
+                                      deleteObject(REF)
+                                        .then(() => {
+                                          console.log(
+                                            `Image for ${name} deleted`
+                                          );
+                                        })
+                                        .catch((error) => {
+                                          console.log(error);
+                                        });
+                                    }}
+                                    className="removeImageBtn"
+                                    id={`removeImageBtnB${index + 1}`}
+                                    style={{
+                                      display:
+                                        questions[index].optionImageB !== ""
+                                          ? "block"
+                                          : "none",
+                                    }}
+                                  >
+                                    Remove Image
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                           <div className="o3">
                             <label htmlFor="option3">Option 3</label>
-                            <input
-                              type="text"
-                              name="option3"
-                              id="option3"
-                              defaultValue={question.o3}
-                              onChange={(e) => {
-                                let quests = [...questions];
-                                quests[index].o3 = e.target.value;
-                                setQuestions(quests);
-                              }}
-                            />
+                            <div className="mainDivOption">
+                              <div className="optionText">
+                                <input
+                                  type="text"
+                                  name="option3"
+                                  placeholder="Enter text for option 3"
+                                  id="option3"
+                                  defaultValue={question.o3}
+                                  onChange={(e) => {
+                                    let quests = [...questions];
+                                    quests[index].o3 = e.target.value;
+                                    setQuestions(quests);
+                                  }}
+                                />
+                              </div>
+                              <div className="optionImage">
+                                <img
+                                  id={`optionImageC${index + 1}`}
+                                  src={questions[index].optionImageC}
+                                  alt="optionImageC"
+                                  style={{
+                                    display:
+                                      questions[index].optionImageC !== ""
+                                        ? "block"
+                                        : "none",
+                                  }}
+                                />
+                                <p
+                                  id={`optionImageTextC${index + 1}`}
+                                  style={{
+                                    display:
+                                      questions[index].optionImageC === ""
+                                        ? "block"
+                                        : "none",
+                                  }}
+                                >
+                                  No image for this option
+                                </p>
+                                <div className="imageConsole">
+                                  <input
+                                    type="file"
+                                    name="questionImageUpload"
+                                    className="imageUploadInput"
+                                    id={`optionImageUploadC${index + 1}`}
+                                    onChange={(e) => {
+                                      const name = `q${index + 1}C`;
+                                      const REF = ref(storage, name);
+                                      const file = e.target.files[0];
+                                      const metadata = {
+                                        contentType: file.type,
+                                      };
+                                      uploadBytes(REF, file, metadata)
+                                        .then((snapshot) => {
+                                          let temp = questions;
+                                          temp[
+                                            index
+                                          ].optionImageC = `https://firebasestorage.googleapis.com/v0/b/rlc-gate-test-portal.appspot.com/o/q${
+                                            index + 1
+                                          }C?alt=media`;
+                                          setQuestions(temp);
+                                          document.getElementById(
+                                            `optionImageC${index + 1}`
+                                          ).src = URL.createObjectURL(
+                                            e.target.files[0]
+                                          );
+                                          document.getElementById(
+                                            `optionImageC${index + 1}`
+                                          ).style.display = "block";
+                                          document.getElementById(
+                                            `optionImageTextC${index + 1}`
+                                          ).style.display = "none";
+                                          document.getElementById(
+                                            `removeImageBtnC${index + 1}`
+                                          ).style.display = "block";
+                                          console.log(
+                                            `Image for ${name} uploaded`
+                                          );
+                                        })
+                                        .catch(console.error);
+                                      // console.log(e.target.files[0]);
+                                    }}
+                                  />
+                                  <button
+                                    onClick={(e) => {
+                                      let temp = questions;
+                                      temp[index].optionImageC = "";
+                                      setQuestions(temp);
+                                      document.getElementById(
+                                        `optionImageC${index + 1}`
+                                      ).style.display = "none";
+                                      document.getElementById(
+                                        `optionImageTextC${index + 1}`
+                                      ).style.display = "block";
+                                      e.target.style.display = "none";
+                                      document.getElementById(
+                                        `optionImageUploadC${index + 1}`
+                                      ).value = "";
+                                      // Remove from database
+                                      const name = `q${index + 1}C`;
+                                      const REF = ref(storage, name);
+                                      deleteObject(REF)
+                                        .then(() => {
+                                          console.log(
+                                            `Image for ${name} deleted`
+                                          );
+                                        })
+                                        .catch((error) => {
+                                          console.log(error);
+                                        });
+                                    }}
+                                    className="removeImageBtn"
+                                    id={`removeImageBtnC${index + 1}`}
+                                    style={{
+                                      display:
+                                        questions[index].optionImageC !== ""
+                                          ? "block"
+                                          : "none",
+                                    }}
+                                  >
+                                    Remove Image
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                           <div className="o4">
                             <label htmlFor="option4">Option 4</label>
-                            <input
-                              type="text"
-                              name="option4"
-                              id="option4"
-                              defaultValue={question.o4}
-                              onChange={(e) => {
-                                let quests = [...questions];
-                                quests[index].o4 = e.target.value;
-                                setQuestions(quests);
-                              }}
-                            />
+                            <div className="mainDivOption">
+                              <div className="optionText">
+                                <input
+                                  type="text"
+                                  name="option4"
+                                  id="option4"
+                                  placeholder="Enter text for option 4"
+                                  defaultValue={question.o4}
+                                  onChange={(e) => {
+                                    let quests = [...questions];
+                                    quests[index].o4 = e.target.value;
+                                    setQuestions(quests);
+                                  }}
+                                />
+                              </div>
+                              <div className="optionImage">
+                                <img
+                                  id={`optionImageD${index + 1}`}
+                                  src={questions[index].optionImageD}
+                                  alt="optionImageD"
+                                  style={{
+                                    display:
+                                      questions[index].optionImageD !== ""
+                                        ? "block"
+                                        : "none",
+                                  }}
+                                />
+                                <p
+                                  id={`optionImageTextD${index + 1}`}
+                                  style={{
+                                    display:
+                                      questions[index].optionImageD === ""
+                                        ? "block"
+                                        : "none",
+                                  }}
+                                >
+                                  No image for this option
+                                </p>
+                                <div className="imageConsole">
+                                  <input
+                                    type="file"
+                                    name="questionImageUpload"
+                                    className="imageUploadInput"
+                                    id={`optionImageUploadD${index + 1}`}
+                                    onChange={(e) => {
+                                      const name = `q${index + 1}D`;
+                                      const REF = ref(storage, name);
+                                      const file = e.target.files[0];
+                                      const metadata = {
+                                        contentType: file.type,
+                                      };
+                                      uploadBytes(REF, file, metadata)
+                                        .then((snapshot) => {
+                                          let temp = questions;
+                                          temp[
+                                            index
+                                          ].optionImageD = `https://firebasestorage.googleapis.com/v0/b/rlc-gate-test-portal.appspot.com/o/q${
+                                            index + 1
+                                          }D?alt=media`;
+                                          setQuestions(temp);
+                                          document.getElementById(
+                                            `optionImageD${index + 1}`
+                                          ).src = URL.createObjectURL(
+                                            e.target.files[0]
+                                          );
+                                          document.getElementById(
+                                            `optionImageD${index + 1}`
+                                          ).style.display = "block";
+                                          document.getElementById(
+                                            `optionImageTextD${index + 1}`
+                                          ).style.display = "none";
+                                          document.getElementById(
+                                            `removeImageBtnD${index + 1}`
+                                          ).style.display = "block";
+                                          console.log(
+                                            `Image for ${name} uploaded`
+                                          );
+                                        })
+                                        .catch(console.error);
+                                      // console.log(e.target.files[0]);
+                                    }}
+                                  />
+                                  <button
+                                    onClick={(e) => {
+                                      let temp = questions;
+                                      temp[index].optionImageD = "";
+                                      setQuestions(temp);
+                                      document.getElementById(
+                                        `optionImageD${index + 1}`
+                                      ).style.display = "none";
+                                      document.getElementById(
+                                        `optionImageTextD${index + 1}`
+                                      ).style.display = "block";
+                                      e.target.style.display = "none";
+                                      document.getElementById(
+                                        `optionImageUploadD${index + 1}`
+                                      ).value = "";
+                                      // Remove from database
+                                      const name = `q${index + 1}D`;
+                                      const REF = ref(storage, name);
+                                      deleteObject(REF)
+                                        .then(() => {
+                                          console.log(
+                                            `Image for ${name} deleted`
+                                          );
+                                        })
+                                        .catch((error) => {
+                                          console.log(error);
+                                        });
+                                    }}
+                                    className="removeImageBtn"
+                                    id={`removeImageBtnD${index + 1}`}
+                                    style={{
+                                      display:
+                                        questions[index].optionImageD !== ""
+                                          ? "block"
+                                          : "none",
+                                    }}
+                                  >
+                                    Remove Image
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                           <div className="answer">
                             <label htmlFor="answer">Answer</label>
@@ -325,67 +793,99 @@ export default function QuestionEditor() {
                             <label htmlFor="questionImageUpload">
                               Upload Image
                             </label>
-                            {/* {questions[index].questionImageUrl !== "" ? ( */}
-                            <img
-                              id={`questionImage${index + 1}`}
-                              src={questions[index].questionImageUrl}
-                              alt="questionImage"
-                              style={{
-                                display:
-                                  questions[index].questionImageUrl !== ""
-                                    ? "block"
-                                    : "none",
-                              }}
-                            />
-                            {/* ) : ( */}
-                            <p
-                              id={`questionImageText${index + 1}`}
-                              style={{
-                                display:
-                                  questions[index].questionImageUrl === ""
-                                    ? "block"
-                                    : "none",
-                              }}
-                            >
-                              No image for this question
-                            </p>
-                            {/* )} */}
-
-                            <input
-                              type="file"
-                              name="questionImageUpload"
-                              id="questionImageUpload"
-                              onChange={(e) => {
-                                const name = `q${index + 1}`;
-                                const REF = ref(storage, name);
-                                const file = e.target.files[0];
-                                const metadata = {
-                                  contentType: file.type,
-                                };
-                                uploadBytes(REF, file, metadata)
-                                  .then((snapshot) => {
+                            <div className="mainDivOption">
+                              <img
+                                id={`questionImage${index + 1}`}
+                                src={questions[index].questionImageUrl}
+                                alt="questionImage"
+                                style={{
+                                  display:
+                                    questions[index].questionImageUrl !== ""
+                                      ? "block"
+                                      : "none",
+                                }}
+                              />
+                              <p
+                                id={`questionImageText${index + 1}`}
+                                style={{
+                                  display:
+                                    questions[index].questionImageUrl === ""
+                                      ? "block"
+                                      : "none",
+                                }}
+                              >
+                                No image for this question
+                              </p>
+                              <div className="imageConsole">
+                                <input
+                                  type="file"
+                                  name="questionImageUpload"
+                                  id="questionImageUpload"
+                                  onChange={(e) => {
+                                    const name = `q${index + 1}`;
+                                    const REF = ref(storage, name);
+                                    const file = e.target.files[0];
+                                    const metadata = {
+                                      contentType: file.type,
+                                    };
+                                    uploadBytes(REF, file, metadata)
+                                      .then((snapshot) => {
+                                        let temp = questions;
+                                        temp[
+                                          index
+                                        ].questionImageUrl = `https://firebasestorage.googleapis.com/v0/b/rlc-gate-test-portal.appspot.com/o/q${
+                                          index + 1
+                                        }?alt=media`;
+                                        setQuestions(temp);
+                                        document.getElementById(
+                                          `questionImage${index + 1}`
+                                        ).src = URL.createObjectURL(
+                                          e.target.files[0]
+                                        );
+                                        document.getElementById(
+                                          `questionImage${index + 1}`
+                                        ).style.display = "block";
+                                        document.getElementById(
+                                          `questionImageText${index + 1}`
+                                        ).style.display = "none";
+                                        console.log(
+                                          `Image for ${name} uploaded`
+                                        );
+                                      })
+                                      .catch(console.error);
+                                    // console.log(e.target.files[0]);
+                                  }}
+                                />
+                                <button
+                                  onClick={() => {
                                     let temp = questions;
-                                    temp[
-                                      index
-                                    ].questionImageUrl = `https://firebasestorage.googleapis.com/v0/b/rlc-gate-test-portal.appspot.com/o/q${
-                                      index + 1
-                                    }?alt=media`;
+                                    temp[index].questionImageUrl = "";
                                     setQuestions(temp);
                                     document.getElementById(
                                       `questionImage${index + 1}`
-                                    ).src = URL.createObjectURL(e.target.files[0]);
-                                    document.getElementById(
-                                      `questionImage${index + 1}`
-                                    ).style.display = "block";
+                                    ).style.display = "none";
                                     document.getElementById(
                                       `questionImageText${index + 1}`
-                                    ).style.display = "none";
-                                    console.log(`Image for ${name} uploaded`);
-                                  })
-                                  .catch(console.error);
-                                // console.log(e.target.files[0]);
-                              }}
-                            />
+                                    ).style.display = "block";
+                                    // Remove from database
+                                    const name = `q${index + 1}`;
+                                    const REF = ref(storage, name);
+                                    deleteObject(REF)
+                                      .then(() => {
+                                        console.log(
+                                          `Image for ${name} deleted`
+                                        );
+                                      })
+                                      .catch((error) => {
+                                        console.log(error);
+                                      });
+                                  }}
+                                  className="removeImageBtn"
+                                >
+                                  Remove Image
+                                </button>
+                              </div>
+                            </div>
                           </div>
                           <button
                             className="removeBtn"
