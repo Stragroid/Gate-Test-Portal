@@ -137,6 +137,7 @@ export default function MainTest() {
     else if(input==="back")
     {
       if (currentPosition > 0) {
+        p[0].value=p[0].value.substring(0,currentPosition-1)+p[0].value.substring(currentPosition,p[0].value.length);
         p[0].selectionStart = currentPosition - 1;
         p[0].selectionEnd = currentPosition - 1;
       }
@@ -147,15 +148,30 @@ export default function MainTest() {
     }
     else
     {
+      if(input==="-")
+      {
+        if(currentPosition!=0)return;
+      }
+      if(input===".")
+      {
+        let c=p[0].value.length;
+        while(c--)
+        {
+          console.log(p[0].value[c]);
+          if(p[0].value[c]===".")return;
+        }
+      }
       if(currentPosition===p[0].value.length)
       {
         p[0].value+=input;
         p[0].selectionStart=currentPosition+1;
+        p[0].selectionEnd = currentPosition + 1;
       }
       else
       {
         p[0].value=p[0].value.substring(0,currentPosition)+input+p[0].value.substring(currentPosition,p[0].value.length);
         p[0].selectionStart=currentPosition+1;
+        p[0].selectionEnd = currentPosition + 1;
       }
     }
     console.log(p[0].selectionStart, "position");
@@ -631,7 +647,7 @@ export default function MainTest() {
                           }}
                         readOnly/>
                         <div className="keypad">
-                        <button className="backspace" onClick={()=>{keypad("back",index)}}>backspace</button><br/>
+                        <div><button className="backspace" onClick={()=>{keypad("back",index)}}>backspace</button></div>
                         <div><button className="num" onClick={()=>{keypad("7",index)}}>7</button>
                         <button className="num" onClick={()=>{keypad("8",index)}}>8</button>
                         <button className="num" onClick={()=>{keypad("9",index)}}>9</button><br/></div>
@@ -727,8 +743,8 @@ export default function MainTest() {
                 currentQuestionIndex + "d"
               )[0].checked = false;
             } else {
-              let text = document.getElementById(currentQuestionIndex);
-              text.value = "";
+              let text = document.getElementByName(currentQuestionIndex);
+              text[0].value = "";
             }
             setStudentAnswers(q);
           }}
