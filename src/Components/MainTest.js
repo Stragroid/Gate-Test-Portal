@@ -194,6 +194,11 @@ export default function MainTest() {
               ? "Multiple Correct"
               : "Numerical"}
             {")"}
+            {" { +"}
+            {questions[currentQuestionIndex].marksOnCorrect}
+            {" , "}
+            {questions[currentQuestionIndex].marksOnIncorrect}
+            {" }"}
           </div>
         </div>
         {/* <img
