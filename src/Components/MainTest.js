@@ -114,6 +114,56 @@ export default function MainTest() {
     });
   }
 
+  function keypad(input,index)
+  {
+    let p=document.getElementsByName(index);
+    console.log(p[0].selectionStart);
+    var currentPosition = p[0].selectionStart;
+    if(input==="c")p[0].value="";
+    else if(input==="f")
+    {
+      if (currentPosition < p[0].value.length) {
+        p[0].selectionStart = currentPosition + 1;
+        p[0].selectionEnd = currentPosition + 1;
+      }
+    }
+    else if(input==="b")
+    {
+      if (currentPosition > 0) {
+        p[0].selectionStart = currentPosition - 1;
+        p[0].selectionEnd = currentPosition - 1;
+      }
+    }
+    else if(input==="back")
+    {
+      if (currentPosition > 0) {
+        p[0].selectionStart = currentPosition - 1;
+        p[0].selectionEnd = currentPosition - 1;
+      }
+    }
+    else if(currentPosition===0)
+    {
+      p[0].value=input+p[0].value;
+    }
+    else
+    {
+      if(currentPosition===p[0].value.length)
+      {
+        p[0].value+=input;
+        p[0].selectionStart=currentPosition+1;
+      }
+      else
+      {
+        p[0].value=p[0].value.substring(0,currentPosition)+input+p[0].value.substring(currentPosition,p[0].value.length);
+        p[0].selectionStart=currentPosition+1;
+      }
+    }
+    console.log(p[0].selectionStart, "position");
+    console.log(p[0].value, "value");
+    // console.log(p[0].selectionEnd);
+    
+  }
+
   function changeStatus() {
     updateDoc(doc(db, "test", testid), { online: !online });
     setOnline(!online);
@@ -579,7 +629,25 @@ export default function MainTest() {
                             }
                             setStudentAnswers(q);
                           }}
-                        />
+                        readOnly/>
+                        <div className="keypad">
+                        <button className="backspace" onClick={()=>{keypad("back",index)}}>backspace</button><br/>
+                        <div><button className="num" onClick={()=>{keypad("7",index)}}>7</button>
+                        <button className="num" onClick={()=>{keypad("8",index)}}>8</button>
+                        <button className="num" onClick={()=>{keypad("9",index)}}>9</button><br/></div>
+                        <div><button className="num" onClick={()=>{keypad("4",index)}}>4</button>
+                        <button className="num" onClick={()=>{keypad("5",index)}}>5</button>
+                        <button className="num" onClick={()=>{keypad("6",index)}}>6</button><br/></div>
+                        <div><button className="num" onClick={()=>{keypad("1",index)}}>1</button>
+                        <button className="num" onClick={()=>{keypad("2",index)}}>2</button>
+                        <button className="num" onClick={()=>{keypad("3",index)}}>3</button><br/></div>
+                        <div><button className="num" onClick={()=>{keypad("0",index)}}>0</button>
+                        <button className="num" onClick={()=>{keypad("-",index)}}>-</button>
+                        <button className="num" onClick={()=>{keypad(".",index)}}>.</button><br/></div>
+                        <div><button className="direc" onClick={()=>{keypad("b",index)}}>←</button>
+                        <button className="direc" onClick={()=>{keypad("f",index)}}>→</button><br/></div>
+                        <div><button className="backspace" onClick={()=>{keypad("c",index)}}>Clear all</button></div>
+                        </div>
                       </label>
                     </>
                   )}

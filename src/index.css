@@ -432,3 +432,22 @@ mjx-msub {
 [class^="mjx-"] {
   overflow-y: hidden;
 }
+
+.keypad{
+  display: flex;
+  flex-direction: column;
+  padding-left: 27px;
+  padding-top: 3px;
+}
+
+.backspace{
+  width:120px;
+}
+
+.direc{
+  width:60px;
+}
+
+.num{
+  width:40px;
+}
