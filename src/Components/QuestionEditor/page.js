@@ -49,6 +49,8 @@ export default function QuestionEditor() {
             value.optionImageD = "";
           if (!value.explanation || value.explanation === "")
             value.explanation = "";
+          if(!value.explanationImageUrl || value.explanationImageUrl === "")
+            value.explanationImageUrl = "";
           quests.push(value);
         });
         setQuestions(quests);
@@ -148,6 +150,7 @@ export default function QuestionEditor() {
       let optionImageC = questions[i].optionImageC;
       let optionImageD = questions[i].optionImageD;
       let explanation = questions[i].explanation;
+      let explanationImageUrl = questions[i].explanationImageUrl;
       newQuestions[i + 1] = {
         q: q,
         o1: o1,
@@ -164,6 +167,7 @@ export default function QuestionEditor() {
         optionImageC: optionImageC,
         optionImageD: optionImageD,
         explanation: explanation,
+        explanationImageUrl: explanationImageUrl,
       };
     }
     let test = {
@@ -819,21 +823,21 @@ export default function QuestionEditor() {
                               </div>
                               <div className="optionImage">
                                 <img
-                                  id={`optionImageD${index + 1}`}
-                                  src={questions[index].optionImageD}
-                                  alt="optionImageD"
+                                  id={`explanationImage${index + 1}`}
+                                  src={questions[index].explanationImageUrl}
+                                  alt="explanationImage"
                                   style={{
                                     display:
-                                      questions[index].optionImageD !== ""
+                                      questions[index].explanationImageUrl !== ""
                                         ? "block"
                                         : "none",
                                   }}
                                 />
                                 <p
-                                  id={`optionImageTextD${index + 1}`}
+                                  id={`explanationImageText${index + 1}`}
                                   style={{
                                     display:
-                                      questions[index].optionImageD === ""
+                                      questions[index].explanationImageUrl === ""
                                         ? "block"
                                         : "none",
                                   }}
@@ -847,7 +851,7 @@ export default function QuestionEditor() {
                                     className="imageUploadInput"
                                     id={`optionImageUploadD${index + 1}`}
                                     onChange={(e) => {
-                                      const name = `q${index + 1}D`;
+                                      const name = `explanationImageUrl${index + 1}`;
                                       const REF = ref(storage, name);
                                       const file = e.target.files[0];
                                       const metadata = {
@@ -858,23 +862,23 @@ export default function QuestionEditor() {
                                           let temp = questions;
                                           temp[
                                             index
-                                          ].optionImageD = `https://firebasestorage.googleapis.com/v0/b/rlc-gate-test-portal.appspot.com/o/q${
+                                          ].explanationImageUrl = `https://firebasestorage.googleapis.com/v0/b/rlc-gate-test-portal.appspot.com/o/explanationImageUrl${
                                             index + 1
-                                          }D?alt=media`;
+                                          }?alt=media`;
                                           setQuestions(temp);
                                           document.getElementById(
-                                            `optionImageD${index + 1}`
+                                            `explanationImage${index + 1}`
                                           ).src = URL.createObjectURL(
                                             e.target.files[0]
                                           );
                                           document.getElementById(
-                                            `optionImageD${index + 1}`
+                                            `explanationImage${index + 1}`
                                           ).style.display = "block";
                                           document.getElementById(
-                                            `optionImageTextD${index + 1}`
+                                            `explanationImageText${index + 1}`
                                           ).style.display = "none";
                                           document.getElementById(
-                                            `removeImageBtnD${index + 1}`
+                                            `removeExplanationImage${index + 1}`
                                           ).style.display = "block";
                                           console.log(
                                             `Image for ${name} uploaded`
@@ -887,20 +891,20 @@ export default function QuestionEditor() {
                                   <button
                                     onClick={(e) => {
                                       let temp = questions;
-                                      temp[index].optionImageD = "";
+                                      temp[index].explanationImageUrl = "";
                                       setQuestions(temp);
                                       document.getElementById(
-                                        `optionImageD${index + 1}`
+                                        `explanationImage${index + 1}`
                                       ).style.display = "none";
                                       document.getElementById(
-                                        `optionImageTextD${index + 1}`
+                                        `explanationImageText${index + 1}`
                                       ).style.display = "block";
                                       e.target.style.display = "none";
                                       document.getElementById(
                                         `optionImageUploadD${index + 1}`
                                       ).value = "";
                                       // Remove from database
-                                      const name = `q${index + 1}D`;
+                                      const name = `explanationImageUrl${index + 1}`;
                                       const REF = ref(storage, name);
                                       deleteObject(REF)
                                         .then(() => {
@@ -913,10 +917,10 @@ export default function QuestionEditor() {
                                         });
                                     }}
                                     className="removeImageBtn"
-                                    id={`removeImageBtnD${index + 1}`}
+                                    id={`removeExplanationImage${index + 1}`}
                                     style={{
                                       display:
-                                        questions[index].optionImageD !== ""
+                                        questions[index].explanationImageUrl !== ""
                                           ? "block"
                                           : "none",
                                     }}

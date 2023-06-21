@@ -30,6 +30,7 @@ export default function Answers() {
           map.forEach(function (value, key) {
             quests.push(value);
           });
+          console.log(quests);
           setQuestions(quests);
         });
       })
@@ -250,7 +251,16 @@ export default function Answers() {
                       <div className="answerExplanation">
                         <p>Correct Answer: {question.a}</p>
                         <p>Marks Obtained: {findMarks(index)}</p>
-                        <p>Explanation: {question.explanation}</p>
+                        <p>
+                          Explanation:
+                          <span>
+                            <img
+                              alt="explanationImage"
+                              src={question.explanationImageUrl}
+                            />
+                            {question.explanation}
+                          </span>
+                        </p>
                       </div>
                     </>
                   ) : question.questionType === "momcq" ? (
@@ -306,7 +316,16 @@ export default function Answers() {
                       <div className="answerExplanation">
                         <p>Correct Answer: {question.a}</p>
                         <p>Marks Obtained: {findMarks(index)}</p>
-                        <p>Explanation: {question.explanation}</p>
+                        <p>
+                          Explanation:
+                          <span>
+                            <img
+                              alt="explanationImage"
+                              src={question.explanationImageUrl}
+                            />
+                            {question.explanation}
+                          </span>
+                        </p>
                       </div>
                     </>
                   ) : (
@@ -323,7 +342,16 @@ export default function Answers() {
                       <div className="answerExplanation">
                         <p>Correct Answer: {question.a}</p>
                         <p>Marks Obtained: {findMarks(index)}</p>
-                        <p>Explanation: {question.explanation}</p>
+                        <p>
+                          Explanation: <br />
+                          <span>
+                            <img
+                              alt="explanationImage"
+                              src={question.explanationImageUrl}
+                            />
+                            {question.explanation}
+                          </span>
+                        </p>
                       </div>
                     </>
                   )}
