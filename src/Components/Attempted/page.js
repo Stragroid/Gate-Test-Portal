@@ -26,21 +26,28 @@ export default function Attemped() {
     <>
       <div className="noTestBody">
         <div className="noTestMain">
-        {user.email}<br/>
+          {user.email}
+          <br />
           You have already attempted this test.
           <div>
-          <button
-            onClick={() => {
-              window.location.reload();
-            }}
-          >
-            Reload
-          </button>&nbsp;&nbsp;
-          <button
-            onClick={logout}
-          >
-            logout
-          </button></div>
+            <button
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
+              Reload
+            </button>
+            &nbsp;&nbsp;
+            {/* <button
+              onClick={() => {
+                navigate("/answers");
+              }}
+            >
+              Check Answers
+            </button> */}
+            &nbsp;&nbsp;
+            <button onClick={logout}>logout</button>
+          </div>
         </div>
       </div>
     </>

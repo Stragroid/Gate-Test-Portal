@@ -1,0 +1,28 @@
+.logoutBtn {
+  background-color: #0c7cd5;
+  color: #ffffff;
+  border: 1px solid #c8c8c8;
+  border-radius: 2px;
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 400;
+  padding: 10px 20px 10px 20px;
+  text-align: center;
+  vertical-align: middle;
+  float: left;
+  font-family: arial, verdana, helvetica, sans-serif;
+  cursor: pointer;
+  margin: 0;
+}
+
+.answerExplanation {
+  width: 100%;
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: medium;
+}
+
+.answerExplanation p {
+  width: 97%;
+  margin: 0;
+}

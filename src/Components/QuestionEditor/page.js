@@ -14,6 +14,7 @@ import { deleteObject, ref, uploadBytes } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function QuestionEditor() {
   const [questionCount, setQuestionCount] = useState(0);
@@ -46,6 +47,8 @@ export default function QuestionEditor() {
             value.optionImageC = "";
           if (!value.optionImageD || value.optionImageD === "")
             value.optionImageD = "";
+          if (!value.explanation || value.explanation === "")
+            value.explanation = "";
           quests.push(value);
         });
         setQuestions(quests);
@@ -79,7 +82,28 @@ export default function QuestionEditor() {
   }
 
   function changeStatus() {
-    updateDoc(doc(db, "test", testid), { online: !online });
+    let tempStatus = !online;
+    updateDoc(doc(db, "test", testid), { online: !online }).then(() => {
+      if (tempStatus) {
+        toast("Test is Online", {
+          icon: "🟢",
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+      } else {
+        toast("Test is Offline", {
+          icon: "🔴",
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+      }
+    });
     setOnline(!online);
   }
 
@@ -123,6 +147,7 @@ export default function QuestionEditor() {
       let optionImageB = questions[i].optionImageB;
       let optionImageC = questions[i].optionImageC;
       let optionImageD = questions[i].optionImageD;
+      let explanation = questions[i].explanation;
       newQuestions[i + 1] = {
         q: q,
         o1: o1,
@@ -138,6 +163,7 @@ export default function QuestionEditor() {
         optionImageB: optionImageB,
         optionImageC: optionImageC,
         optionImageD: optionImageD,
+        explanation: explanation,
       };
     }
     let test = {
@@ -145,12 +171,40 @@ export default function QuestionEditor() {
       startTime: Timestamp.fromDate(new Date(testStartTimestamp)),
       duration: testDuration,
     };
-    updateDoc(doc(db, "test", testid), test);
+    updateDoc(doc(db, "test", testid), test)
+      .then(() => {
+        toast("Test Uploaded", {
+          icon: "✅",
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+      })
+      .catch((error) => {
+        toast("Cannot Upload", {
+          icon: "❌",
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+      });
   }
 
   function clearTest() {
     setQuestions([]);
     setQuestionCount(0);
+    toast("Test Cleared", {
+      icon: "✅",
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+    });
   }
 
   function logout(e) {
@@ -182,6 +236,14 @@ export default function QuestionEditor() {
           attended: false,
           answers: answer,
         });
+      });
+      toast("Updated Student Database", {
+        icon: "✅",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
       });
     });
   }
@@ -736,6 +798,135 @@ export default function QuestionEditor() {
                               }}
                             />
                           </div>
+                          <div className="questionSolutionExplanation">
+                            <label htmlFor="questionSolutionExplanation">
+                              Explanation
+                            </label>
+                            <div className="mainDivOption">
+                              <div className="optionText">
+                                <input
+                                  type="text"
+                                  name="questionSolutionExplanation"
+                                  id="questionSolutionExplanation"
+                                  placeholder="Enter explanation for question"
+                                  defaultValue={question.explanation}
+                                  onChange={(e) => {
+                                    let quests = [...questions];
+                                    quests[index].explanation = e.target.value;
+                                    setQuestions(quests);
+                                  }}
+                                />
+                              </div>
+                              <div className="optionImage">
+                                <img
+                                  id={`optionImageD${index + 1}`}
+                                  src={questions[index].optionImageD}
+                                  alt="optionImageD"
+                                  style={{
+                                    display:
+                                      questions[index].optionImageD !== ""
+                                        ? "block"
+                                        : "none",
+                                  }}
+                                />
+                                <p
+                                  id={`optionImageTextD${index + 1}`}
+                                  style={{
+                                    display:
+                                      questions[index].optionImageD === ""
+                                        ? "block"
+                                        : "none",
+                                  }}
+                                >
+                                  No image for this option
+                                </p>
+                                <div className="imageConsole">
+                                  <input
+                                    type="file"
+                                    name="questionImageUpload"
+                                    className="imageUploadInput"
+                                    id={`optionImageUploadD${index + 1}`}
+                                    onChange={(e) => {
+                                      const name = `q${index + 1}D`;
+                                      const REF = ref(storage, name);
+                                      const file = e.target.files[0];
+                                      const metadata = {
+                                        contentType: file.type,
+                                      };
+                                      uploadBytes(REF, file, metadata)
+                                        .then((snapshot) => {
+                                          let temp = questions;
+                                          temp[
+                                            index
+                                          ].optionImageD = `https://firebasestorage.googleapis.com/v0/b/rlc-gate-test-portal.appspot.com/o/q${
+                                            index + 1
+                                          }D?alt=media`;
+                                          setQuestions(temp);
+                                          document.getElementById(
+                                            `optionImageD${index + 1}`
+                                          ).src = URL.createObjectURL(
+                                            e.target.files[0]
+                                          );
+                                          document.getElementById(
+                                            `optionImageD${index + 1}`
+                                          ).style.display = "block";
+                                          document.getElementById(
+                                            `optionImageTextD${index + 1}`
+                                          ).style.display = "none";
+                                          document.getElementById(
+                                            `removeImageBtnD${index + 1}`
+                                          ).style.display = "block";
+                                          console.log(
+                                            `Image for ${name} uploaded`
+                                          );
+                                        })
+                                        .catch(console.error);
+                                      // console.log(e.target.files[0]);
+                                    }}
+                                  />
+                                  <button
+                                    onClick={(e) => {
+                                      let temp = questions;
+                                      temp[index].optionImageD = "";
+                                      setQuestions(temp);
+                                      document.getElementById(
+                                        `optionImageD${index + 1}`
+                                      ).style.display = "none";
+                                      document.getElementById(
+                                        `optionImageTextD${index + 1}`
+                                      ).style.display = "block";
+                                      e.target.style.display = "none";
+                                      document.getElementById(
+                                        `optionImageUploadD${index + 1}`
+                                      ).value = "";
+                                      // Remove from database
+                                      const name = `q${index + 1}D`;
+                                      const REF = ref(storage, name);
+                                      deleteObject(REF)
+                                        .then(() => {
+                                          console.log(
+                                            `Image for ${name} deleted`
+                                          );
+                                        })
+                                        .catch((error) => {
+                                          console.log(error);
+                                        });
+                                    }}
+                                    className="removeImageBtn"
+                                    id={`removeImageBtnD${index + 1}`}
+                                    style={{
+                                      display:
+                                        questions[index].optionImageD !== ""
+                                          ? "block"
+                                          : "none",
+                                    }}
+                                  >
+                                    Remove Image
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                           <div className="questionType">
                             <label htmlFor="questionType">Question Type</label>
                             <select
@@ -955,6 +1146,7 @@ export default function QuestionEditor() {
                 <button className="btn" id="logOutBtn" onClick={logout}>
                   Logout
                 </button>
+                <Toaster position="top-left" reverseOrder={false} />
               </div>
             </>
           ) : null

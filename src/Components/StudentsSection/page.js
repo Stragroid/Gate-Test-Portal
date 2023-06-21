@@ -108,7 +108,6 @@ export default function StudentsSection() {
             </tbody>
           </table>
           <div className="downloadBtns">
-            <button className="downloadBtn">Download Question Paper</button>
             <button className="downloadBtn">
               <CSVLink className="downloadBtnText" data={csvData}>
                 Download Student Answer
