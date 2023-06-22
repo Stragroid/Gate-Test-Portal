@@ -223,7 +223,10 @@ export default function MainTest() {
       }
     }
     // console.log(p[0].selectionStart, "position");
-    // console.log(p[0].value, "value");
+    // console.log(p[0].value, input);
+    let q = studentAnswers;
+    q[currentQuestionIndex].answer = p[0].value;
+    setStudentAnswers(q);
     // console.log(p[0].selectionEnd);
   }
 
@@ -251,7 +254,9 @@ export default function MainTest() {
 
   function saveAnswers(email) {
     let savedAnswers = {};
+    // console.log(studentAnswers);
     for (let i = 0; i < questions.length; i++) {
+      // console.log(studentAnswers[i].answer);
       savedAnswers[i] = {
         status: studentAnswers[i].status,
         answer: studentAnswers[i].answer,
@@ -389,7 +394,17 @@ export default function MainTest() {
                             setStudentAnswers(q);
                           }}
                         />
-                        &nbsp;{question.o1}
+                        <span>
+                          &nbsp;{question.o1}
+                          <img
+                            alt="optionImageA"
+                            src={question.optionImageA}
+                            style={{
+                              display:
+                                question.optionImageA === "" ? "none" : "block",
+                            }}
+                          />
+                        </span>
                       </label>
                       <label>
                         <input
@@ -420,7 +435,17 @@ export default function MainTest() {
                             setStudentAnswers(q);
                           }}
                         />
-                        &nbsp;{question.o2}
+                        <span>
+                          &nbsp;{question.o2}
+                          <img
+                            alt="optionImageB"
+                            src={question.optionImageB}
+                            style={{
+                              display:
+                                question.optionImageB === "" ? "none" : "block",
+                            }}
+                          />
+                        </span>
                       </label>
                       <label>
                         <input
@@ -451,7 +476,17 @@ export default function MainTest() {
                             setStudentAnswers(q);
                           }}
                         />
-                        &nbsp;{question.o3}
+                        <span>
+                          &nbsp;{question.o3}
+                          <img
+                            alt="optionImageC"
+                            src={question.optionImageC}
+                            style={{
+                              display:
+                                question.optionImageC === "" ? "none" : "block",
+                            }}
+                          />
+                        </span>
                       </label>
                       <label>
                         <input
@@ -482,7 +517,17 @@ export default function MainTest() {
                             setStudentAnswers(q);
                           }}
                         />
-                        &nbsp;{question.o4}
+                        <span>
+                          &nbsp;{question.o4}
+                          <img
+                            alt="optionImageD"
+                            src={question.optionImageD}
+                            style={{
+                              display:
+                                question.optionImageD === "" ? "none" : "block",
+                            }}
+                          />
+                        </span>
                       </label>
                     </>
                   ) : question.questionType === "momcq" ? (
@@ -530,7 +575,17 @@ export default function MainTest() {
                             setStudentAnswers(q);
                           }}
                         />
-                        &nbsp;{question.o1}
+                        <span>
+                          &nbsp;{question.o1}
+                          <img
+                            alt="optionImageA"
+                            src={question.optionImageA}
+                            style={{
+                              display:
+                                question.optionImageA === "" ? "none" : "block",
+                            }}
+                          />
+                        </span>
                       </label>
                       <label>
                         <input
@@ -574,7 +629,17 @@ export default function MainTest() {
                             setStudentAnswers(q);
                           }}
                         />
-                        &nbsp;{question.o2}
+                        <span>
+                          &nbsp;{question.o2}
+                          <img
+                            alt="optionImageB"
+                            src={question.optionImageB}
+                            style={{
+                              display:
+                                question.optionImageB === "" ? "none" : "block",
+                            }}
+                          />
+                        </span>
                       </label>
                       <label>
                         <input
@@ -618,7 +683,17 @@ export default function MainTest() {
                             setStudentAnswers(q);
                           }}
                         />
-                        &nbsp;{question.o3}
+                        <span>
+                          &nbsp;{question.o3}
+                          <img
+                            alt="optionImageC"
+                            src={question.optionImageC}
+                            style={{
+                              display:
+                                question.optionImageC === "" ? "none" : "block",
+                            }}
+                          />
+                        </span>
                       </label>
                       <label>
                         <input
@@ -660,7 +735,17 @@ export default function MainTest() {
                             setStudentAnswers(q);
                           }}
                         />
-                        &nbsp;{question.o4}
+                        <span>
+                          &nbsp;{question.o4}
+                          <img
+                            alt="optionImageD"
+                            src={question.optionImageD}
+                            style={{
+                              display:
+                                question.optionImageD === "" ? "none" : "block",
+                            }}
+                          />
+                        </span>
                       </label>
                     </>
                   ) : (
@@ -672,7 +757,7 @@ export default function MainTest() {
                           defaultValue={studentAnswers[index].answer}
                           id={index}
                           onChange={(e) => {
-                            console.log("OK");
+                            // console.log("OK");
                             let q = studentAnswers;
                             q[index].answer = e.target.value;
                             if (

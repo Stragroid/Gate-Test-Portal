@@ -257,6 +257,12 @@ export default function Answers() {
                             <img
                               alt="explanationImage"
                               src={question.explanationImageUrl}
+                              style={{
+                                display:
+                                  question.explanationImageUrl === ""
+                                    ? "none"
+                                    : "block",
+                              }}
                             />
                             {question.explanation}
                           </span>
@@ -322,6 +328,12 @@ export default function Answers() {
                             <img
                               alt="explanationImage"
                               src={question.explanationImageUrl}
+                              style={{
+                                display:
+                                  question.explanationImageUrl === ""
+                                    ? "none"
+                                    : "block",
+                              }}
                             />
                             {question.explanation}
                           </span>
@@ -348,6 +360,12 @@ export default function Answers() {
                             <img
                               alt="explanationImage"
                               src={question.explanationImageUrl}
+                              style={{
+                                display:
+                                  question.explanationImageUrl === ""
+                                    ? "none"
+                                    : "block",
+                              }}
                             />
                             {question.explanation}
                           </span>
