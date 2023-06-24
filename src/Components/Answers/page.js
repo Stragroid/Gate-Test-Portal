@@ -105,8 +105,15 @@ export default function Answers() {
         } else {
           return questions[index].marksOnIncorrect;
         }
-      } else {
+      } else if (questions[index].questionType === "somcq") {
         if (studentAnswers[index].answer === questions[index].a)
+          return questions[index].marksOnCorrect;
+        else return questions[index].marksOnIncorrect;
+      } else {
+        if (
+          parseFloat(studentAnswers[index].answer) ===
+          parseFloat(questions[index].a)
+        )
           return questions[index].marksOnCorrect;
         else return questions[index].marksOnIncorrect;
       }
