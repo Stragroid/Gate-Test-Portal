@@ -1,4 +1,4 @@
-.logoutBtn {
+.logoutBtn, .dirBtn {
   background-color: #0c7cd5;
   color: #ffffff;
   border: 1px solid #c8c8c8;
@@ -13,6 +13,10 @@
   font-family: arial, verdana, helvetica, sans-serif;
   cursor: pointer;
   margin: 0;
+}
+
+.dirBtn{
+  width: 100%;
 }
 
 .answerExplanation {

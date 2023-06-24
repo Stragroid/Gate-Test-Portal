@@ -31,7 +31,7 @@ export default function StudentsSection() {
           if (student.attended) {
             let answers = Object.values(student.answers);
             for (let i = 0; i < answers.length; i++) {
-              if (answers[i].answer === '') continue;
+              if (answers[i].answer === "") continue;
               if (tempQuestions[i].questionType === "somcq") {
                 if (answers[i].answer === tempQuestions[i].a) {
                   marks += tempQuestions[i].marksOnCorrect;
@@ -60,7 +60,6 @@ export default function StudentsSection() {
             }
           }
           student.marks = marks;
-          //   console.log(student);
           let tempCsvArray = [
             index + 1,
             student.username,
@@ -73,7 +72,9 @@ export default function StudentsSection() {
           });
           tempCsvData.push(tempCsvArray);
         });
-        console.log(tempCsvData);
+        tempStuds.sort((a, b) => {
+          return b.marks - a.marks;
+        });
         setCsvData(tempCsvData);
         setStudents(tempStuds);
       });

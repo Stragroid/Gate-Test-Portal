@@ -466,6 +466,32 @@ export default function Answers() {
               })}
             </div>
           </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <button
+              className="dirBtn"
+              onClick={() => {
+                if (currentQuestionIndex > 0)
+                  setCurrentQuestionIndex(currentQuestionIndex - 1);
+              }}
+            >
+              Prev
+            </button>
+            <button
+              className="dirBtn"
+              onClick={() => {
+                if (currentQuestionIndex < studentAnswers.length - 1)
+                  setCurrentQuestionIndex(currentQuestionIndex + 1);
+              }}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </>
