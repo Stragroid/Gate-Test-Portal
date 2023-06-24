@@ -17,7 +17,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function QuestionEditor() {
-  const [questionCount, setQuestionCount] = useState(0);
   const [questions, setQuestions] = useState(null);
   const [testid, setTestId] = useState(null);
   const [online, setOnline] = useState(false);
@@ -34,7 +33,6 @@ export default function QuestionEditor() {
         setOnline(doc.data().online);
         setTestId(doc.id);
         const map = new Map(Object.entries(doc.data().questions));
-        setQuestionCount(map.size);
         let quests = [];
         map.forEach(function (value, key) {
           if (!value.questionImageUrl || value.questionImageUrl === "")
@@ -49,7 +47,7 @@ export default function QuestionEditor() {
             value.optionImageD = "";
           if (!value.explanation || value.explanation === "")
             value.explanation = "";
-          if(!value.explanationImageUrl || value.explanationImageUrl === "")
+          if (!value.explanationImageUrl || value.explanationImageUrl === "")
             value.explanationImageUrl = "";
           quests.push(value);
         });
@@ -75,12 +73,9 @@ export default function QuestionEditor() {
   }, [user]);
 
   function removeQuestion(index) {
-    return () => {
-      let quests = [...questions];
-      quests.splice(index, 1);
-      setQuestions(quests);
-      setQuestionCount(questionCount - 1);
-    };
+    let quests = [...questions];
+    quests.splice(index, 1);
+    setQuestions(quests);
   }
 
   function changeStatus() {
@@ -120,7 +115,6 @@ export default function QuestionEditor() {
       a: "",
     });
     setQuestions(quests);
-    setQuestionCount(questionCount + 1);
   }
 
   function ISOtoLocal(time) {
@@ -134,7 +128,7 @@ export default function QuestionEditor() {
   function uploadTest() {
     // Convert questions array to map
     let newQuestions = {};
-    for (let i = 0; i < questionCount; i++) {
+    for (let i = 0; i < questions.length; i++) {
       let q = questions[i].q;
       let o1 = questions[i].o1;
       let o2 = questions[i].o2;
@@ -199,8 +193,8 @@ export default function QuestionEditor() {
   }
 
   function clearTest() {
+    console.log(questions.length);
     setQuestions([]);
-    setQuestionCount(0);
     toast("Test Cleared", {
       icon: "✅",
       style: {
@@ -228,7 +222,7 @@ export default function QuestionEditor() {
   function updateStudentDB() {
     const q = query(collection(db, "students"));
     let answer = {};
-    for (let i = 0; i < questionCount; i++) {
+    for (let i = 0; i < questions.length; i++) {
       answer[i + 1] = {
         answer: "",
         status: i === 0 ? "na" : "nv",
@@ -264,6 +258,7 @@ export default function QuestionEditor() {
                       return (
                         <div
                           className={"editableQuestion q" + (index + 1)}
+                          id={"questionTab" + (index + 1)}
                           key={index + 1}
                         >
                           <div className="q">
@@ -272,7 +267,9 @@ export default function QuestionEditor() {
                               type="text"
                               name="question"
                               id="question"
-                              defaultValue={question.q}
+                              // defaultValue={question.q}
+                              value={question.q}
+                              placeholder="Enter text for question"
                               onChange={(e) => {
                                 let quests = [...questions];
                                 quests[index].q = e.target.value;
@@ -794,7 +791,9 @@ export default function QuestionEditor() {
                               type="text"
                               name="answer"
                               id="answer"
-                              defaultValue={question.a}
+                              // defaultValue={question.a}
+                              placeholder="Enter answer for question"
+                              value={question.a}
                               onChange={(e) => {
                                 let quests = [...questions];
                                 quests[index].a = e.target.value;
@@ -813,7 +812,7 @@ export default function QuestionEditor() {
                                   name="questionSolutionExplanation"
                                   id="questionSolutionExplanation"
                                   placeholder="Enter explanation for question"
-                                  defaultValue={question.explanation}
+                                  value={question.explanation}
                                   onChange={(e) => {
                                     let quests = [...questions];
                                     quests[index].explanation = e.target.value;
@@ -828,7 +827,8 @@ export default function QuestionEditor() {
                                   alt="explanationImage"
                                   style={{
                                     display:
-                                      questions[index].explanationImageUrl !== ""
+                                      questions[index].explanationImageUrl !==
+                                      ""
                                         ? "block"
                                         : "none",
                                   }}
@@ -837,7 +837,8 @@ export default function QuestionEditor() {
                                   id={`explanationImageText${index + 1}`}
                                   style={{
                                     display:
-                                      questions[index].explanationImageUrl === ""
+                                      questions[index].explanationImageUrl ===
+                                      ""
                                         ? "block"
                                         : "none",
                                   }}
@@ -851,7 +852,9 @@ export default function QuestionEditor() {
                                     className="imageUploadInput"
                                     id={`optionImageUploadD${index + 1}`}
                                     onChange={(e) => {
-                                      const name = `explanationImageUrl${index + 1}`;
+                                      const name = `explanationImageUrl${
+                                        index + 1
+                                      }`;
                                       const REF = ref(storage, name);
                                       const file = e.target.files[0];
                                       const metadata = {
@@ -904,7 +907,9 @@ export default function QuestionEditor() {
                                         `optionImageUploadD${index + 1}`
                                       ).value = "";
                                       // Remove from database
-                                      const name = `explanationImageUrl${index + 1}`;
+                                      const name = `explanationImageUrl${
+                                        index + 1
+                                      }`;
                                       const REF = ref(storage, name);
                                       deleteObject(REF)
                                         .then(() => {
@@ -920,7 +925,8 @@ export default function QuestionEditor() {
                                     id={`removeExplanationImage${index + 1}`}
                                     style={{
                                       display:
-                                        questions[index].explanationImageUrl !== ""
+                                        questions[index].explanationImageUrl !==
+                                        ""
                                           ? "block"
                                           : "none",
                                     }}
@@ -936,7 +942,7 @@ export default function QuestionEditor() {
                             <select
                               name="questionType"
                               id="questionType"
-                              defaultValue={question.questionType}
+                              value={question.questionType}
                               onChange={(e) => {
                                 let quests = [...questions];
                                 quests[index].questionType = e.target.value;
@@ -956,7 +962,7 @@ export default function QuestionEditor() {
                               type="text"
                               name="marksOnCorrect"
                               id="marksOnCorrect"
-                              defaultValue={question.marksOnCorrect}
+                              value={question.marksOnCorrect}
                               onChange={(e) => {
                                 let quests = [...questions];
                                 quests[index].marksOnCorrect = parseInt(
@@ -974,7 +980,7 @@ export default function QuestionEditor() {
                               type="text"
                               name="marksOnInCorrect"
                               id="marksOnInCorrect"
-                              defaultValue={question.marksOnIncorrect}
+                              value={question.marksOnIncorrect}
                               onChange={(e) => {
                                 let quests = [...questions];
                                 quests[index].marksOnIncorrect = parseInt(
@@ -1084,7 +1090,9 @@ export default function QuestionEditor() {
                           </div>
                           <button
                             className="removeBtn"
-                            onClick={removeQuestion(index)}
+                            onClick={() => {
+                              removeQuestion(index);
+                            }}
                           >
                             Remove Question
                           </button>
