@@ -170,7 +170,7 @@ export default function MainTest() {
       q[index].answer = p[0].value;
       if (q[index].status === "mr" || q[index].status === "amr") {
         if (q[index].status === "mr") {
-          setMarkedForReview(markedForReview + 1);
+          setMarkedForReview(markedForReview - 1);
           setAnsweredReview(answeredReview + 1);
         }
         q[index].status = "amr";
@@ -187,7 +187,7 @@ export default function MainTest() {
       q[index].answer = p[0].value;
       if (q[index].status === "mr" || q[index].status === "amr") {
         if (q[index].status === "mr") {
-          setMarkedForReview(markedForReview + 1);
+          setMarkedForReview(markedForReview - 1);
           setAnsweredReview(answeredReview + 1);
         }
         q[index].status = "amr";
@@ -380,7 +380,7 @@ export default function MainTest() {
                               q[index].status === "amr"
                             ) {
                               if (q[index].status === "mr") {
-                                setMarkedForReview(markedForReview + 1);
+                                setMarkedForReview(markedForReview - 1);
                                 setAnsweredReview(answeredReview + 1);
                               }
                               q[index].status = "amr";
@@ -421,7 +421,7 @@ export default function MainTest() {
                               q[index].status === "amr"
                             ) {
                               if (q[index].status === "mr") {
-                                setMarkedForReview(markedForReview + 1);
+                                setMarkedForReview(markedForReview - 1);
                                 setAnsweredReview(answeredReview + 1);
                               }
                               q[index].status = "amr";
@@ -462,7 +462,7 @@ export default function MainTest() {
                               q[index].status === "amr"
                             ) {
                               if (q[index].status === "mr") {
-                                setMarkedForReview(markedForReview + 1);
+                                setMarkedForReview(markedForReview - 1);
                                 setAnsweredReview(answeredReview + 1);
                               }
                               q[index].status = "amr";
@@ -503,7 +503,7 @@ export default function MainTest() {
                               q[index].status === "amr"
                             ) {
                               if (q[index].status === "mr") {
-                                setMarkedForReview(markedForReview + 1);
+                                setMarkedForReview(markedForReview - 1);
                                 setAnsweredReview(answeredReview + 1);
                               }
                               q[index].status = "amr";
@@ -561,7 +561,7 @@ export default function MainTest() {
                               q[index].status === "amr"
                             ) {
                               if (q[index].status === "mr") {
-                                setMarkedForReview(markedForReview + 1);
+                                setMarkedForReview(markedForReview - 1);
                                 setAnsweredReview(answeredReview + 1);
                               }
                               q[index].status = "amr";
@@ -615,7 +615,7 @@ export default function MainTest() {
                               q[index].status === "amr"
                             ) {
                               if (q[index].status === "mr") {
-                                setMarkedForReview(markedForReview + 1);
+                                setMarkedForReview(markedForReview - 1);
                                 setAnsweredReview(answeredReview + 1);
                               }
                               q[index].status = "amr";
@@ -669,7 +669,7 @@ export default function MainTest() {
                               q[index].status === "amr"
                             ) {
                               if (q[index].status === "mr") {
-                                setMarkedForReview(markedForReview + 1);
+                                setMarkedForReview(markedForReview - 1);
                                 setAnsweredReview(answeredReview + 1);
                               }
                               q[index].status = "amr";
@@ -721,7 +721,7 @@ export default function MainTest() {
                               q[index].status === "amr"
                             ) {
                               if (q[index].status === "mr") {
-                                setMarkedForReview(markedForReview + 1);
+                                setMarkedForReview(markedForReview - 1);
                                 setAnsweredReview(answeredReview + 1);
                               }
                               q[index].status = "amr";
@@ -765,7 +765,7 @@ export default function MainTest() {
                               q[index].status === "amr"
                             ) {
                               if (q[index].status === "mr") {
-                                setMarkedForReview(markedForReview + 1);
+                                setMarkedForReview(markedForReview - 1);
                                 setAnsweredReview(answeredReview + 1);
                               }
                               q[index].status = "amr";
