@@ -1,0 +1,30 @@
+.collapsibleHeader {
+  width: 100%;
+  text-align: left;
+  outline: none;
+  margin-bottom: 5px;
+  height: 30px;
+  /* font-family: 'Courier New', Courier, monospace; */
+  font-weight: bold;
+  padding: 4px;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+/* .collapsibleChildren {
+  transition: width 600ms ease-out, height 600ms ease-out;
+} */
+
+.collapsibleChildren--hidden {
+  max-height: 0;
+  transition: max-height 0.55s ease-out;
+  overflow: hidden;
+  position: relative;
+}
+
+.collapsibleChildren {
+  max-height: 1000px;
+  transition: max-height 0.55s ease;
+  overflow: hidden;
+  position: relative;
+}
