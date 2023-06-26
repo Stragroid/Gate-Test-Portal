@@ -1,5 +1,0 @@
-(function() {
-
-    MathJax.typeset();
-
-})();

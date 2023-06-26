@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { db } from "../../firebaseConfig";
+import { db } from "../../../firebaseConfig";
 import { collection, query, getDocs } from "firebase/firestore";
 import "./style.css";
 import { CSVLink } from "react-csv";

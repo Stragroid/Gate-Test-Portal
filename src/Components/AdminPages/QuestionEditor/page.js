@@ -1,5 +1,5 @@
 import "./style.css";
-import { db, auth, storage } from "../../firebaseConfig";
+import { db, auth, storage } from "../../../firebaseConfig";
 import {
   collection,
   query,

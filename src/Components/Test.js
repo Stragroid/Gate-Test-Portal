@@ -60,7 +60,7 @@ export default function Test() {
           <MainTest />
         )
       ) : (
-        <WaitingPage testTime={startTime} />
+        <WaitingPage testTime={new Date(startTime).getTime()} />
       )}
     </>
   );

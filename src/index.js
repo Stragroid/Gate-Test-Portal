@@ -11,8 +11,8 @@ import {
 
 import App from "./App";
 import Signin from "./Components/Signin/page";
-import Adminlogin from "./Components/Adminlogin/page";
-import Admin from "./Components/Admin/page";
+import Adminlogin from "./Components/AdminPages/Adminlogin/page";
+import Admin from "./Components/AdminPages/Admin/page";
 
 initFirebase();
 
