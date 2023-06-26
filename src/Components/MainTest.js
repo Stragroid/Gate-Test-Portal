@@ -24,6 +24,7 @@ export default function MainTest() {
   const [studentAnswers, setStudentAnswers] = useState(null);
   const [studentID, setStudentID] = useState(null);
   const [userName, setUserName] = useState(null);
+  const [NumericalCursorIndex, setNumericalCursorIndex] = useState(-1);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -117,7 +118,8 @@ export default function MainTest() {
   function keypad(input, index) {
     let p = document.getElementsByName(index);
     // console.log(p[0].selectionStart);
-    var currentPosition = p[0].selectionStart;
+    // var currentPosition = p[0].selectionStart;
+    var currentPosition = NumericalCursorIndex;
     if (input === "c") {
       p[0].value = "";
       let q = studentAnswers;
@@ -132,23 +134,30 @@ export default function MainTest() {
       }
       q[currentQuestionIndex].answer = "";
       setStudentAnswers(q);
+      setNumericalCursorIndex(0);
+      // console.log("[", NumericalCursorIndex, "]");
     } else if (input === "f") {
       if (currentPosition < p[0].value.length) {
-        p[0].selectionStart = currentPosition + 1;
-        p[0].selectionEnd = currentPosition + 1;
+        setNumericalCursorIndex(currentPosition + 1);
+        // console.log(NumericalCursorIndex);
+        // p[0].selectionStart = currentPosition + 1;
+        // p[0].selectionEnd = currentPosition + 1;
       }
     } else if (input === "b") {
       if (currentPosition > 0) {
-        p[0].selectionStart = currentPosition - 1;
-        p[0].selectionEnd = currentPosition - 1;
+        setNumericalCursorIndex(currentPosition - 1);
+        // console.log(NumericalCursorIndex);
+        // p[0].selectionStart = currentPosition - 1;
+        // p[0].selectionEnd = currentPosition - 1;
       }
     } else if (input === "back") {
       if (currentPosition > 0) {
         p[0].value =
           p[0].value.substring(0, currentPosition - 1) +
           p[0].value.substring(currentPosition, p[0].value.length);
-        p[0].selectionStart = currentPosition - 1;
-        p[0].selectionEnd = currentPosition - 1;
+        setNumericalCursorIndex(currentPosition - 1);
+        // p[0].selectionStart = currentPosition - 1;
+        // p[0].selectionEnd = currentPosition - 1;
         if (p[0].value === "") {
           let q = studentAnswers;
           if (q[currentQuestionIndex].status === "a") {
@@ -166,6 +175,7 @@ export default function MainTest() {
       }
     } else if (currentPosition === 0) {
       p[0].value = input + p[0].value;
+      setNumericalCursorIndex(currentPosition + 1);
       let q = studentAnswers;
       q[index].answer = p[0].value;
       if (q[index].status === "mr" || q[index].status === "amr") {
@@ -182,6 +192,7 @@ export default function MainTest() {
         q[index].status = "a";
       }
       setStudentAnswers(q);
+      // console.log("{", NumericalCursorIndex, "}");
     } else {
       let q = studentAnswers;
       q[index].answer = p[0].value;
@@ -211,16 +222,19 @@ export default function MainTest() {
       }
       if (currentPosition === p[0].value.length) {
         p[0].value += input;
-        p[0].selectionStart = currentPosition + 1;
-        p[0].selectionEnd = currentPosition + 1;
+
+        // p[0].selectionStart = currentPosition + 1;
+        // p[0].selectionEnd = currentPosition + 1;
       } else {
         p[0].value =
           p[0].value.substring(0, currentPosition) +
           input +
           p[0].value.substring(currentPosition, p[0].value.length);
-        p[0].selectionStart = currentPosition + 1;
-        p[0].selectionEnd = currentPosition + 1;
+        // p[0].selectionStart = currentPosition + 1;
+        // p[0].selectionEnd = currentPosition + 1;
       }
+      setNumericalCursorIndex(currentPosition + 1);
+      // console.log("(", NumericalCursorIndex, ")");
     }
     // console.log(p[0].selectionStart, "position");
     // console.log(p[0].value, input);
@@ -1111,6 +1125,14 @@ export default function MainTest() {
                     key={index}
                     onClick={(e) => {
                       setCurrentQuestionIndex(index);
+                      if (!questions[index].questionType.includes("mcq")) {
+                        // console.log(index, studentAnswers[index].answer.length);
+                        setNumericalCursorIndex(
+                          studentAnswers[index].answer.length
+                        );
+                      } else {
+                        setNumericalCursorIndex(-1);
+                      }
                       if (answer.status === "nv") {
                         answer.status = "na";
                         setNotVisited(notVisited - 1);
