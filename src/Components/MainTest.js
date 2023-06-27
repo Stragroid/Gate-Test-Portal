@@ -98,20 +98,32 @@ export default function MainTest() {
   });
 
   function handleSubmit() {
-    saveAnswers(user.email);
+    let savedAnswers = {};
+    // console.log(studentAnswers);
+    for (let i = 0; i < questions.length; i++) {
+      // console.log(studentAnswers[i].answer);
+      savedAnswers[i] = {
+        status: studentAnswers[i].status,
+        answer: studentAnswers[i].answer,
+      };
+    }
     updateDoc(doc(db, "students", studentID), {
-      attended: true,
+      answers: savedAnswers,
     }).then(() => {
-      signOut(auth)
-        .then(() => {
-          console.log("Signed out successfully!");
-          navigate("/");
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
-        });
+      updateDoc(doc(db, "students", studentID), {
+        attended: true,
+      }).then(() => {
+        signOut(auth)
+          .then(() => {
+            console.log("Signed out successfully!");
+            navigate("/");
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+          });
+      });
     });
   }
 
@@ -245,8 +257,8 @@ export default function MainTest() {
   }
 
   function changeStatus() {
-    updateDoc(doc(db, "test", testid), { online: !online });
-    setOnline(!online);
+    updateDoc(doc(db, "test", testid), { online: false });
+    setOnline(false);
   }
 
   function TimeLeft(testStartTime, testDuration) {
@@ -260,8 +272,8 @@ export default function MainTest() {
     minutes < 10 ? (minutes = `0${minutes}`) : (minutes = `${minutes}`);
     seconds < 10 ? (seconds = `0${seconds}`) : (seconds = `${seconds}`);
     if (timeLeft <= 0) {
-      handleSubmit();
       changeStatus();
+      handleSubmit();
     }
     setTimeLeft(`${hours}:${minutes}:${seconds}`);
   }
