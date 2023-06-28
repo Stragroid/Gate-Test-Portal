@@ -114,6 +114,16 @@ export default function QuestionEditor() {
       o3: "",
       o4: "",
       a: "",
+      questionType: "",
+      marksOnCorrect: "",
+      marksOnIncorrect: "",
+      questionImageUrl: "",
+      optionImageA: "",
+      optionImageB: "",
+      optionImageC: "",
+      optionImageD: "",
+      explanation: "",
+      explanationImageUrl: "",
     });
     setQuestions(quests);
   }
@@ -129,6 +139,7 @@ export default function QuestionEditor() {
   function uploadTest() {
     // Convert questions array to map
     let newQuestions = {};
+    // console.log(questions);
     for (let i = 0; i < questions.length; i++) {
       let q = questions[i].q;
       let o1 = questions[i].o1;
@@ -194,7 +205,7 @@ export default function QuestionEditor() {
   }
 
   function clearTest() {
-    console.log(questions.length);
+    // console.log(questions.length);
     setQuestions([]);
     toast("Test Cleared", {
       icon: "✅",
