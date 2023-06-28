@@ -71,7 +71,7 @@ export default function QuestionEditor() {
         }
       });
     }
-  }, [user]);
+  }, []);
 
   function removeQuestion(index) {
     let quests = [...questions];
@@ -986,17 +986,11 @@ export default function QuestionEditor() {
                                 placeholder="Enter marks on correct"
                                 value={question.marksOnCorrect}
                                 onChange={(e) => {
-                                  if (
-                                    e.target.value === ""
-                                    // ||
-                                    // (e.target.value === "-" &&
-                                    //   e.target.value.length === 1)
-                                  )
-                                    return;
                                   let quests = [...questions];
-                                  quests[index].marksOnCorrect = parseInt(
-                                    e.target.value
-                                  );
+                                  quests[index].marksOnCorrect =
+                                    e.target.value !== ""
+                                      ? parseInt(e.target.value)
+                                      : "";
                                   setQuestions(quests);
                                 }}
                               />
@@ -1012,17 +1006,11 @@ export default function QuestionEditor() {
                                 placeholder="Enter marks on incorrect"
                                 value={question.marksOnIncorrect}
                                 onChange={(e) => {
-                                  if (
-                                    e.target.value === ""
-                                    //  ||
-                                    // (e.target.value === "-" &&
-                                    //   e.target.value.length === 1)
-                                  )
-                                    return;
                                   let quests = [...questions];
-                                  quests[index].marksOnIncorrect = parseInt(
-                                    e.target.value
-                                  );
+                                  quests[index].marksOnIncorrect =
+                                    e.target.value !== ""
+                                      ? parseInt(e.target.value)
+                                      : "";
                                   setQuestions(quests);
                                 }}
                               />
