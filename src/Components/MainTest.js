@@ -301,7 +301,7 @@ export default function MainTest() {
     }
   }
 
-  return questions && studentAnswers ? (
+  return questions && studentAnswers && questions.length > 0 ? (
     <>
       <header style={{ backgroundColor: "#3b5998" }}>
         <img src={RLCicon} height="80" alt="banner" />

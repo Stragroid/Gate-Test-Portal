@@ -980,17 +980,16 @@ export default function QuestionEditor() {
                                 Marks on Correct
                               </label>
                               <input
-                                type="text"
+                                type="number"
                                 name="marksOnCorrect"
                                 id="marksOnCorrect"
                                 placeholder="Enter marks on correct"
-                                value={question.marksOnCorrect}
+                                defaultValue={question.marksOnCorrect}
                                 onChange={(e) => {
                                   let quests = [...questions];
-                                  quests[index].marksOnCorrect =
-                                    e.target.value !== ""
-                                      ? parseInt(e.target.value)
-                                      : "";
+                                  quests[index].marksOnCorrect = parseInt(
+                                    e.target.value
+                                  );
                                   setQuestions(quests);
                                 }}
                               />
@@ -1004,13 +1003,12 @@ export default function QuestionEditor() {
                                 name="marksOnInCorrect"
                                 id="marksOnInCorrect"
                                 placeholder="Enter marks on incorrect"
-                                value={question.marksOnIncorrect}
+                                defaultValue={question.marksOnIncorrect}
                                 onChange={(e) => {
                                   let quests = [...questions];
-                                  quests[index].marksOnIncorrect =
-                                    e.target.value !== ""
-                                      ? parseInt(e.target.value)
-                                      : "";
+                                  quests[index].marksOnIncorrect = parseInt(
+                                    e.target.value
+                                  );
                                   setQuestions(quests);
                                 }}
                               />

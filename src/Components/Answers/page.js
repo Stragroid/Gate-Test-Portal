@@ -259,7 +259,7 @@ export default function Answers() {
                         <p>Correct Answer: {question.a}</p>
                         <p>Marks Obtained: {findMarks(index)}</p>
                         <p>
-                          Explanation:
+                          Explanation:&nbsp;
                           <span>
                             <img
                               alt="explanationImage"
