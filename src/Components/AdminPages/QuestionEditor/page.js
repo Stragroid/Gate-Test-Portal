@@ -114,7 +114,7 @@ export default function QuestionEditor() {
       o3: "",
       o4: "",
       a: "",
-      questionType: "",
+      questionType: "somcq",
       marksOnCorrect: "",
       marksOnIncorrect: "",
       questionImageUrl: "",
@@ -964,6 +964,7 @@ export default function QuestionEditor() {
                                 onChange={(e) => {
                                   let quests = [...questions];
                                   quests[index].questionType = e.target.value;
+                                  // console.log(e.target.value);
                                   setQuestions(quests);
                                 }}
                               >
@@ -982,8 +983,16 @@ export default function QuestionEditor() {
                                 type="text"
                                 name="marksOnCorrect"
                                 id="marksOnCorrect"
+                                placeholder="Enter marks on correct"
                                 value={question.marksOnCorrect}
                                 onChange={(e) => {
+                                  if (
+                                    e.target.value === ""
+                                    // ||
+                                    // (e.target.value === "-" &&
+                                    //   e.target.value.length === 1)
+                                  )
+                                    return;
                                   let quests = [...questions];
                                   quests[index].marksOnCorrect = parseInt(
                                     e.target.value
@@ -1000,8 +1009,16 @@ export default function QuestionEditor() {
                                 type="text"
                                 name="marksOnInCorrect"
                                 id="marksOnInCorrect"
+                                placeholder="Enter marks on incorrect"
                                 value={question.marksOnIncorrect}
                                 onChange={(e) => {
+                                  if (
+                                    e.target.value === ""
+                                    //  ||
+                                    // (e.target.value === "-" &&
+                                    //   e.target.value.length === 1)
+                                  )
+                                    return;
                                   let quests = [...questions];
                                   quests[index].marksOnIncorrect = parseInt(
                                     e.target.value
@@ -1151,6 +1168,7 @@ export default function QuestionEditor() {
                   id="testDuration"
                   defaultValue={testDuration}
                   onChange={(e) => {
+                    if (e.target.value === "") return;
                     setTestDuration(e.target.value);
                   }}
                 />
