@@ -820,7 +820,7 @@ export default function QuestionEditor() {
                               </label>
                               <div className="mainDivOption">
                                 <div className="optionText">
-                                  <input
+                                  <textarea
                                     type="text"
                                     name="questionSolutionExplanation"
                                     id="questionSolutionExplanation"
