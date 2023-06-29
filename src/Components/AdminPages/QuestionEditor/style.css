@@ -67,6 +67,14 @@ select {
   padding: 3px;
 }
 
+#questionSolutionExplanation{
+  height: 100px;
+  /* width: 800px; */
+  width: 95%;
+  resize: none;
+  padding: 3px;
+}
+
 .removeBtn,
 .addQuestionBtn {
   padding: 5px;
