@@ -1006,7 +1006,7 @@ export default function QuestionEditor() {
                                 defaultValue={question.marksOnIncorrect}
                                 onChange={(e) => {
                                   let quests = [...questions];
-                                  quests[index].marksOnIncorrect = parseInt(
+                                  quests[index].marksOnIncorrect = parseFloat(
                                     e.target.value
                                   );
                                   setQuestions(quests);
