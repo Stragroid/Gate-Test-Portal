@@ -92,10 +92,10 @@ export default function Answers() {
     ) {
       if (questions[index].questionType === "momcq") {
         let ans = studentAnswers[index].answer.split("");
-        let correct = questions[index].a.split("");
+        let correct = questions[index].a.toLowerCase().split("");
         let flag = true;
         for (let i = 0; i < ans.length; i++) {
-          if (!correct.includes(ans[i])) {
+          if (!correct.includes(ans[i].toLowerCase())) {
             flag = false;
             break;
           }
@@ -106,7 +106,7 @@ export default function Answers() {
           return questions[index].marksOnIncorrect;
         }
       } else if (questions[index].questionType === "somcq") {
-        if (studentAnswers[index].answer === questions[index].a)
+        if ((studentAnswers[index].answer).toLowerCase() === (questions[index].a).toLowerCase())
           return questions[index].marksOnCorrect;
         else return questions[index].marksOnIncorrect;
       } else {
