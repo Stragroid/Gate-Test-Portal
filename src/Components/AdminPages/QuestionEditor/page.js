@@ -73,6 +73,16 @@ export default function QuestionEditor() {
     }
   }, []);
 
+  useEffect(() => {
+    try {
+      if (typeof window?.MathJax !== "undefined") {
+        window.MathJax.typeset();
+      }
+    } catch (err) {
+      // console.log(err);
+    }
+  });
+
   function removeQuestion(index) {
     let quests = [...questions];
     quests.splice(index, 1);
@@ -1109,6 +1119,103 @@ export default function QuestionEditor() {
                                     Remove Image
                                   </button>
                                 </div>
+                              </div>
+                            </div>
+                            <div className="questionPreview">
+                              <label htmlFor="questionPreview">
+                                Question Preview
+                              </label>
+                              <div className="questionPreviewDiv">
+                                <p id={`questionPreviewText${index + 1}`}>
+                                  {questions[index].q !== ""
+                                    ? questions[index].q
+                                    : ""}
+                                </p>
+                                <img
+                                  id={`questionPreviewImage${index + 1}`}
+                                  src={questions[index].questionImageUrl}
+                                  alt="questionImage"
+                                  style={{
+                                    display:
+                                      questions[index].questionImageUrl !== ""
+                                        ? "block"
+                                        : "none",
+                                  }}
+                                />
+                                {/* Show options */}
+                                {questions[index].questionType.includes(
+                                  "mcq"
+                                ) ? (
+                                  <div className="optionsDiv">
+                                    <p
+                                      id={`option1Preview${index + 1}`}
+                                      style={{
+                                        display:
+                                          questions[index].o1 !== ""
+                                            ? "block"
+                                            : "none",
+                                      }}
+                                    >
+                                      {"◯ " + questions[index].o1}
+                                    </p>
+                                    <p
+                                      id={`option2Preview${index + 1}`}
+                                      style={{
+                                        display:
+                                          questions[index].o2 !== ""
+                                            ? "block"
+                                            : "none",
+                                      }}
+                                    >
+                                      {"◯ " + questions[index].o2}
+                                    </p>
+                                    <p
+                                      id={`option3Preview${index + 1}`}
+                                      style={{
+                                        display:
+                                          questions[index].o3 !== ""
+                                            ? "block"
+                                            : "none",
+                                      }}
+                                    >
+                                      {"◯ " + questions[index].o3}
+                                    </p>
+                                    <p
+                                      id={`option4Preview${index + 1}`}
+                                      style={{
+                                        display:
+                                          questions[index].o4 !== ""
+                                            ? "block"
+                                            : "none",
+                                      }}
+                                    >
+                                      {"◯ " + questions[index].o4}
+                                    </p>
+                                  </div>
+                                ) : null}
+                                {questions.explanation !== "" ? (
+                                  <p
+                                    id={`explanationPreview${index + 1}`}
+                                    style={{ marginTop: "10px" }}
+                                  >
+                                    <span
+                                      style={{
+                                        fontWeight: "bold",
+                                        fontSize: "1rem",
+                                      }}
+                                    >
+                                      Explanation:
+                                    </span>{" "}
+                                    {questions[index].explanation}
+                                  </p>
+                                ) : null}
+                                {questions[index].explanationImageUrl !== "" ? (
+                                  <img
+                                    id={`explanationImagePreview${index + 1}`}
+                                    src={questions[index].explanationImageUrl}
+                                    alt="explanationImage"
+                                  />
+                                ) : null}
                               </div>
                             </div>
                             <button

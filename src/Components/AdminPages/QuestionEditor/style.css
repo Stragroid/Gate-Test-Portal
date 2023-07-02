@@ -9,7 +9,8 @@
 .marksOnCorrect,
 .marksOnInCorrect,
 .questionImageUpload,
-.questionSolutionExplanation {
+.questionSolutionExplanation,
+.questionPreview {
   overflow-y: hidden;
 }
 
@@ -23,7 +24,8 @@
 .marksOnCorrect,
 .marksOnInCorrect,
 .questionImageUpload,
-.questionSolutionExplanation {
+.questionSolutionExplanation,
+.questionPreview {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -41,12 +43,28 @@
 }
 
 .questions input,
-select {
+select,
+.questionPreviewDiv {
   width: 100%;
   height: 30px;
   padding: 5px;
   border: 1px solid #313131;
   outline: none;
+}
+
+.questionPreviewDiv {
+  padding: 10px;
+  min-height: 200px;
+  max-height: 1000px;
+}
+
+.questionPreviewDiv p {
+  width: 100%;
+  font-size: 1rem;
+}
+
+.questionPreviewDiv .optionsDiv {
+  margin-top: 5px;
 }
 
 .editableQuestion {
@@ -67,7 +85,7 @@ select {
   padding: 3px;
 }
 
-#questionSolutionExplanation{
+#questionSolutionExplanation {
   height: 100px;
   /* width: 800px; */
   width: 95%;
@@ -178,7 +196,8 @@ select {
   align-items: center;
 }
 
-.optionImage img,p {
+.optionImage img,
+p {
   width: 200px;
   height: auto;
   margin-right: 5px;
@@ -200,7 +219,7 @@ select {
   border-radius: 5px;
   outline: none;
   border: 1px solid #313131;
-  background-color: rgb(255, 138, 138);;
+  background-color: rgb(255, 138, 138);
   transition: 0.5s;
 }
 
