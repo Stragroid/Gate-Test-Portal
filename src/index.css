@@ -114,7 +114,7 @@ body {
   padding: 2px 20px 2px 0px;
 }
 #question_area_scrollable {
-  /* background-image: url("download.png"); */
+  background-image: url("rw.jpeg");
   overflow: auto;
   height: 500px;
 }
