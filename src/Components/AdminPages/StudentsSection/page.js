@@ -33,15 +33,15 @@ export default function StudentsSection() {
             for (let i = 0; i < answers.length; i++) {
               if (answers[i].answer === "") continue;
               if (tempQuestions[i].questionType === "somcq") {
-                if (answers[i].answer === tempQuestions[i].a) {
+                if ((answers[i].answer).toLowerCase() === (tempQuestions[i].a).toLowerCase()) {
                   marks += tempQuestions[i].marksOnCorrect;
                 } else {
                   marks += tempQuestions[i].marksOnIncorrect;
                 }
               } else if (tempQuestions[i].questionType === "momcq") {
                 if (
-                  Array.from(answers[i].answer).sort().toString() ===
-                  Array.from(tempQuestions[i].a).sort().toString()
+                  Array.from(answers[i].answer).sort().toString().toLowerCase() ===
+                  Array.from(tempQuestions[i].a).sort().toString().toLowerCase()
                 ) {
                   marks += tempQuestions[i].marksOnCorrect;
                 } else {

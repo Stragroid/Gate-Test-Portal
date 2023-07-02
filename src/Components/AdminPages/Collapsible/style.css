@@ -23,7 +23,7 @@
 }
 
 .collapsibleChildren {
-  max-height: 1000px;
+  max-height: 100000px;
   transition: max-height 0.55s ease;
   overflow: hidden;
   position: relative;
