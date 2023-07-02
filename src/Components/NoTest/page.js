@@ -44,13 +44,13 @@ export default function NoTestPage() {
                 Reload
               </button>
               &nbsp;&nbsp;
-              {/* <button
+              <button
                 onClick={() => {
                   setIsResult(true);
                 }}
               >
                 Results of previous test
-              </button> */}
+              </button>
               &nbsp;&nbsp;
               <button onClick={logout}>Logout</button>
             </div>
