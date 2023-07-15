@@ -87,9 +87,9 @@ export default function StudentsSection() {
           <table>
             <tbody>
               <tr>
-                <th>Sl. No.</th>
+                <th>Rank</th>
                 <th>Name</th>
-                <th>Email</th>
+                {/* <th>Email</th> */}
                 <th>Attendance</th>
                 <th>Marks</th>
               </tr>
@@ -98,7 +98,7 @@ export default function StudentsSection() {
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{student.username}</td>
-                    <td>{student.email}</td>
+                    {/* <td>{student.email}</td> */}
                     <td style={{ color: student.attended ? "green" : "red" }}>
                       {student.attended ? "YES" : "NO"}
                     </td>

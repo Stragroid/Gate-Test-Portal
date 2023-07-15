@@ -1,7 +1,8 @@
 import "./style.css";
 import { useState, useEffect } from "react";
 import QuestionEditor from "../QuestionEditor/page";
-import StudentsSection from "../StudentsSection/page";
+import Results from "../Result/page";
+import StudentControls from "../StudentControls/page";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { db, auth } from "../../../firebaseConfig";
 import {
@@ -51,11 +52,24 @@ export default function Admin() {
                 setCurrentSection(2);
               }}
             >
-              Students Section
+              Results
+            </span>
+            <span
+              onClick={() => {
+                setCurrentSection(3);
+              }}
+            >
+              Student Controls
             </span>
           </div>
           <div className="adminRight">
-            {currentSection === 1 ? <QuestionEditor /> : <StudentsSection />}
+            {currentSection === 1 ? (
+              <QuestionEditor />
+            ) : currentSection === 2 ? (
+              <Results />
+            ) : (
+              <StudentControls />
+            )}
           </div>
         </div>
       ) : (
